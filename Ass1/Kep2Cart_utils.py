@@ -2,7 +2,7 @@
 import numpy as np
 import kep_orbit_utils
 
-def Kep2Cart(Omega, omega, INC, SMA, ECC, theta, mu):
+def Kep2Cart(SMA, ECC, INC, Omega, omega, theta, mu):
     sin = np.sin
     cos = np.cos
     sqrt = np.sqrt

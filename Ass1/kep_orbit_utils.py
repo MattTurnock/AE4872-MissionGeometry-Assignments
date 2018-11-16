@@ -9,6 +9,25 @@ mu_Sun = 1.327178E11
 mu_Jup = 1.2669E8
 mu_Mars = 4.2832E4
 
+def get_SMA(orbital_radius, mu, V):
+    return 1/(2/orbital_radius - V**2/mu)
+
+def get_ECCvector(Vvector, hvector, rvector, mu):
+    r = np.linalg.norm(rvector)
+    return np.cross(Vvector, hvector, axis=0)/mu - rvector/r
+
+def get_INC(hvector):
+    hz = hvector[0][0]
+    hmag = np.linalg.norm(hvector)
+    return np.arccos(hz/hmag)
+
+def get_hvector(rvector, Vvector):
+    return np.cross(rvector, Vvector, axis=0)
+
+def get_N(hvector):
+    unitz = np.vstack((0,0,1))
+    return np.cross(unitz, hvector, axis=0)
+
 def get_orbit_radius(SMA, ECC, theta):
     return SMA*(1-ECC**2)/(1 + ECC*np.cos(theta))
 
@@ -35,3 +54,6 @@ def get_orbit_period(SMA, mu):
 
 def get_H(mu, SMA, ECC):
     return np.sqrt(mu * SMA * (1 - ECC**2))
+
+
+
