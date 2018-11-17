@@ -4,10 +4,26 @@ cos = np.cos
 sin = np.sin
 pi = np.pi
 
-mu_Earth = 398600.441
+mu_Earth = 398600.441E9
 mu_Sun = 1.327178E11
 mu_Jup = 1.2669E8
 mu_Mars = 4.2832E4
+
+def Kep_Rad2Deg(state_kep_in):
+    state_kep = state_kep_in.copy()
+    for i in range(len(state_kep)):
+        if i!= 0 and i!= 1:
+            state_kep[i] = np.rad2deg(state_kep[i])
+
+    return state_kep
+
+def Kep_Deg2Rad(state_kep_in):
+    state_kep = state_kep_in.copy()
+    for i in range(len(state_kep)):
+        if i!= 0 and i!= 1:
+            state_kep[i] = np.deg2rad(state_kep[i])
+
+    return state_kep
 
 def get_SMA(orbital_radius, mu, V):
     return 1/(2/orbital_radius - V**2/mu)
@@ -17,7 +33,7 @@ def get_ECCvector(Vvector, hvector, rvector, mu):
     return np.cross(Vvector, hvector, axis=0)/mu - rvector/r
 
 def get_INC(hvector):
-    hz = hvector[0][0]
+    hz = hvector[2][0]
     hmag = np.linalg.norm(hvector)
     return np.arccos(hz/hmag)
 

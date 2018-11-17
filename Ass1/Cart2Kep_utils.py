@@ -19,7 +19,9 @@ def get_signs_hats(N, ECCvector, rvector, hvector):
 
     return sign_omega, sign_theta, Nhat, ECChat, rhat
 
-def Cart2Kep(rvector, Vvector, mu):
+def Cart2Kep(state_cart, mu=kep_orbit_utils.mu_Earth):
+    rvector = np.vstack(list(np.float128(state_cart[0:3])))
+    Vvector = np.vstack(list(np.float128(state_cart[3:6])))
     #basic/ derivative parameters
     r = np.linalg.norm(rvector)
     V = np.linalg.norm(Vvector)
@@ -43,7 +45,11 @@ def Cart2Kep(rvector, Vvector, mu):
     omega = sign_omega * np.arccos(np.dot(ECChat.T[0], Nhat.T[0]))
     theta = sign_theta * np.arccos(np.dot(rhat.T[0], ECChat.T[0]))
 
-    state = SMA, ECC, INC, Omega, omega, theta
+    state = [SMA, ECC, INC, Omega, omega, theta]
+    for i in range(len(state)):
+        if i!=0 and i!=1:
+            if state[i] < 0 :
+                state[i]=2*np.pi + state[i]
     return state
 
 # Do an example if main
@@ -53,12 +59,11 @@ if __name__ == '__main__':
     x = -2700816.14E-3
     y = -3314092.8E-3
     z = 5266346.42E-3
-    rvector = np.vstack((x,y,z))
     xdot = 5168.606550E-3
     ydot = -5597.546618E-3
     zdot = -868.878445E-3
-    Vvector = np.vstack((xdot, ydot, zdot))
+    state_cart = [x,y,z,xdot,ydot,zdot]
     mu = kep_orbit_utils.mu_Earth
 
-    Cart = Cart2Kep(rvector, Vvector, mu)
+    Cart = Cart2Kep(state_cart)
     print(Cart)

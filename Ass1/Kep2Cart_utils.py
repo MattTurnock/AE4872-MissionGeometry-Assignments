@@ -2,7 +2,10 @@
 import numpy as np
 import kep_orbit_utils
 
-def Kep2Cart(SMA, ECC, INC, Omega, omega, theta, mu):
+#Currently uses vertical numpy vectors, but they can be a bit fiddly, so inputs/outputs are simple lists
+def Kep2Cart(state_kep, mu=kep_orbit_utils.mu_Earth):
+    state_kep = list(np.float128(state_kep))
+    SMA, ECC, INC, Omega, omega, theta = state_kep
     sin = np.sin
     cos = np.cos
     sqrt = np.sqrt
@@ -37,6 +40,7 @@ def Kep2Cart(SMA, ECC, INC, Omega, omega, theta, mu):
     velocity = np.vstack((xdot, ydot, zdot))
 
     state =np.vstack((position,velocity))
+    state=list(state.T[0])
     return state
 
 
@@ -56,8 +60,9 @@ if __name__ == '__main__':
     Omega = np.deg2rad(127.5486706)
     omega = np.deg2rad(74.21987137)
     theta = np.deg2rad(24.10027677)
+    state_kep = SMA, ECC, INC, Omega, omega, theta
     mu = kep_orbit_utils.mu_Earth
 
-    Kep = Kep2Cart(Omega, omega, INC, SMA, ECC, theta, mu)
+    Kep = Kep2Cart(state_kep, mu)
     print(Kep)
 
