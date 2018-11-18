@@ -1,9 +1,15 @@
 #Purpose is to convert from cartesian --> Kepler and vice-versa
 
-import Kep2Cart_utils
-import Cart2Kep_utils
-import kep_orbit_utils
+
+from Ass1 import kep_orbit_utils
+from Ass1 import Kep2Cart_utils
+from Ass1 import Cart2Kep_utils
+import json
+import os
 import numpy as np
+AE4878_path = os.path.dirname(os.path.realpath(__file__))
+with open(os.path.join(AE4878_path,'constants.json')) as handle:
+    course_constants = json.loads(handle.read())
 
 def do_conversion(state_cart, state_kep, mu=kep_orbit_utils.mu_Earth):
     #SMA, ECC, INC, Omega, omega, theta = state_kep
