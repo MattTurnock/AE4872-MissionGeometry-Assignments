@@ -9,6 +9,10 @@ mu_Sun = 1.327178E11
 mu_Jup = 1.2669E8
 mu_Mars = 4.2832E4
 
+def get_precision(number):
+    number_str = str(number)
+    return number_str[::-1].find('.')
+
 def Kep_Rad2Deg(state_kep_in):
     state_kep = state_kep_in.copy()
     for i in range(len(state_kep)):
@@ -70,6 +74,40 @@ def get_orbit_period(SMA, mu):
 
 def get_H(mu, SMA, ECC):
     return np.sqrt(mu * SMA * (1 - ECC**2))
+
+def E2theta(E, ECC):
+    root = np.sqrt((1+ECC)/(1-ECC))
+    inside = root * np.tan(E/2)
+    return 2*np.arctan(inside)
+
+def M2E(M, ECC, verbose=False):
+    precision_in = get_precision(M)
+    precision = precision_in + 1
+    E_i = M
+    E_i_rounded = round(M, precision)
+    running = True
+
+    iterations = 0
+    while running:
+        E_ip1 = E_i + (M - E_i + ECC*np.sin(E_i)/(1-ECC*np.cos(E_i)))
+        E_ip1_rounded = round(E_ip1, precision)
+
+        iterations = iterations + 1
+        if E_i_rounded == E_ip1_rounded:
+            running = False
+        E_i_rounded = E_ip1_rounded
+        E_i = E_ip1
+
+        if iterations == 100000:
+            print('RUNTIME ERROR IN FUNCTION M2E')
+            running=False
+
+    if verbose:
+        return M, iterations
+    else: return M
+
+
+
 
 
 

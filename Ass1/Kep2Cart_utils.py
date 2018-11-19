@@ -1,11 +1,25 @@
 #Function definitions for Keplerian --> Cartesian conversion
 import numpy as np
-import kep_orbit_utils
+from Ass1 import kep_orbit_utils
 
 #Currently uses vertical numpy vectors, but they can be a bit fiddly, so inputs/outputs are simple lists
-def Kep2Cart(state_kep, mu=kep_orbit_utils.mu_Earth):
+def Kep2Cart(state_kep, mu=kep_orbit_utils.mu_Earth, given_angle='theta'):
+
+
+
+
     state_kep = list(np.float128(state_kep))
-    SMA, ECC, INC, Omega, omega, theta = state_kep
+    SMA, ECC, INC, Omega, omega, angle = state_kep
+
+    # if given_angle != theta, then convert it for further calcs
+    if given_angle == 'theta':
+        theta = angle
+    elif given_angle =='E':
+        theta = kep_orbit_utils.E2theta(angle, ECC)
+    elif given_angle == 'M':
+        theta = kep_orbit_utils.E2theta(kep_orbit_utils.M2E(angle, ECC), ECC)
+    else: print('INPUT ERROR ON given_angle VARIABLE, SHOULD BE theta, E or M')
+
     sin = np.sin
     cos = np.cos
     sqrt = np.sqrt
