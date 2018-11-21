@@ -1,6 +1,6 @@
 #Function definitions for converting Cartesian --> Keplerian
 import numpy as np
-import kep_orbit_utils
+from Ass1 import kep_orbit_utils, misc_utils
 
 def get_signs_hats(N, ECCvector, rvector, hvector):
     Nhat = N / np.linalg.norm(N)
@@ -50,7 +50,7 @@ def Cart2Kep(state_cart, mu=kep_orbit_utils.mu_Earth):
     for i in range(len(state)):
         if i!=0 and i!=1:
             if state[i] < 0 :
-                state[i]=2*np.pi + state[i]
+                state[i]=misc_utils.angle2positive(state[i])
     return state
 
 # Do an example if main
