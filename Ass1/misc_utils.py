@@ -3,6 +3,8 @@ import numpy as np
 def get_sigfigs(number):
     '''Return the number of significant figures of the input digit string'''
     digits = str(number)
+    if '-' in digits:
+        digits = digits.replace('-','')
     integral, _, fractional = digits.partition(".")
 
     if fractional:
@@ -47,4 +49,3 @@ def round_list_sigfigs(lst, sigfigs):
 
     return newlst
 
-print(round2sigfig(1.23, 4))

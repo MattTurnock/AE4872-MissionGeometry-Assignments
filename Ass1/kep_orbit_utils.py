@@ -110,6 +110,19 @@ def M2E(M, ECC, verbose=False):
         return E_i, iterations
     else: return E_i
 
+def theta2E(theta, ECC):
+    root = np.sqrt((1-ECC)/(1+ECC))
+    theta = 2*np.arctan(root*np.tan(theta/2))
+    if theta <0:
+        theta = misc_utils.angle2positive(theta)
+    return theta
+
+def E2M(E, ECC):
+    M = E - ECC*np.sin(E)
+    if M <0:
+        M = misc_utils.angle2positive(M)
+    return M
+
 
 
 

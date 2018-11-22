@@ -17,12 +17,24 @@ print('State 1 Cartesian (given): %s' %state_1_cartesian)
 print('State 1 Keplerian (calculated): %s\n' %state_1_keplerian_rounded)
 
 print('State 2 Keplerian (given): %s' %state_2_keplerian)
-print('State 2 Cartesian (calculated): %s' %state_2_cartesian_rounded)
+print('State 2 Cartesian (calculated): %s\n' %state_2_cartesian_rounded)
 
-print('\nState 1 [Cartesian, Keplerian]:\n',
-      latex_utils.Cart2Latex(state_1_cartesian),
-      latex_utils.Kep2Latex(state_1_keplerian_rounded), '\n')
-print('State 2 [Keplerian, cartesian]: \n',
-      latex_utils.Kep2Latex(state_2_keplerian),
-      latex_utils.Cart2Latex(state_2_cartesian_rounded))
+dolatex = False
+if dolatex:
+      print('\nState 1 [Cartesian, Keplerian]:\n',
+            latex_utils.Cart2Latex(state_1_cartesian),
+            latex_utils.Kep2Latex(state_1_keplerian_rounded), '\n')
+      print('State 2 [Keplerian, cartesian]: \n',
+            latex_utils.Kep2Latex(state_2_keplerian),
+            latex_utils.Cart2Latex(state_2_cartesian_rounded))
 
+state_1_theta = state_1_keplerian[-1]
+state_1_E = kep_orbit_utils.theta2E(state_1_theta, state_1_keplerian[1])
+state_1_M = kep_orbit_utils.E2M(state_1_E, state_1_keplerian[1])
+
+state_2_M = state_2_keplerian[-1]
+state_2_E = kep_orbit_utils.M2E(state_2_M, state_2_keplerian[1])
+state_2_theta = kep_orbit_utils.E2theta(state_2_E, state_2_keplerian[1])
+
+print('State 1 [theta, E, M] = [%s, %s, %s]\n' %(misc_utils.round2sigfig(np.rad2deg(state_1_theta), 10), misc_utils.round2sigfig(np.rad2deg(state_1_E), 10), misc_utils.round2sigfig(np.rad2deg(state_1_M),10)))
+print('State 2 [theta, E, M] = [%s, %s, %s]\n' %(misc_utils.round2sigfig(np.rad2deg(state_2_theta), 10), misc_utils.round2sigfig(np.rad2deg(state_2_E), 10), misc_utils.round2sigfig(np.rad2deg(state_2_M), 10)))

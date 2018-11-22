@@ -58,6 +58,3 @@ def Kep2Latex(state_kep, E='Space for E, remove', M='Space for M, remove'):
     """ %(SMA, ECC, INC, Omega, omega, theta, E, M)
 
     return lat
-
-print(Cart2Latex([1,2,3,4,5,6]))
-print(Kep2Latex([1,2,3,4,5,6], 7, 8))

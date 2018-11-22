@@ -82,18 +82,33 @@ cryo_E_calculated_rads, cryo_iterations = kep_orbit_utils.M2E(np.deg2rad(cryo_M)
 cryo_E_calculated = np.rad2deg(cryo_E_calculated_rads)
 cryo_E_calculated_rounded = round(cryo_E_calculated, misc_utils.get_precision(cryo_E))
 
+
+print('\n=========================================theta2E MODULE TEST=====================================================\n')
+print('Cryo true value for [theta, E] = [%s, %s]' %(cryo_theta, cryo_E))
+print('Cryo calculated value for E (given theta): E=%s\n' %(round(np.rad2deg(kep_orbit_utils.theta2E(np.deg2rad(cryo_theta), cryo_ECC)), misc_utils.get_precision(cryo_E))))
+
+print('\n=========================================E2M MODULE TEST=====================================================\n')
+print('Cryo true value for [E,M] = [%s, %s]' %(cryo_E, cryo_M))
+print('Cryo calculated value for M (given E): M=%s\n' %(round(np.rad2deg(kep_orbit_utils.E2M(np.deg2rad(cryo_E), cryo_ECC)), misc_utils.get_precision(cryo_M)+1)))
+
+
 print('\n=========================================E2theta MODULE TEST=====================================================\n')
-print('ISS true value for [theta, E] = [%s, %s]' %(ISS_theta, ISS_E))
-print('ISS calculated value for theta (given E): theta=%s\n' %(ISS_theta_calculated_rounded))
+doISS = False
+if doISS:
+    print('ISS true value for [theta, E] = [%s, %s]' %(ISS_theta, ISS_E))
+    print('ISS calculated value for theta (given E): theta=%s\n' %(ISS_theta_calculated_rounded))
 print('Cryo true value for [theta, E] = [%s, %s]' %(cryo_theta, cryo_E))
 print('Cryo calculated value for theta (given E): theta=%s\n' %(cryo_theta_calculated_rounded))
 
 
 print('\n=========================================M2E MODULE TEST=====================================================\n')
-print('ISS true value for [E, M] = [%s, %s]' %(ISS_E, ISS_M))
-print('ISS calculated value for E (given M): E=%s, in %s iterations\n' %(ISS_E_calculated_rounded, ISS_iterations))
+if doISS:
+    print('ISS true value for [E, M] = [%s, %s]' %(ISS_E, ISS_M))
+    print('ISS calculated value for E (given M): E=%s, in %s iterations\n' %(ISS_E_calculated_rounded, ISS_iterations))
 print('cryo true value for [E, M] = [%s, %s]' %(cryo_E, cryo_M))
 print('cryo calculated value for E (given M): E=%s, in %s iterations\n' %(cryo_E_calculated_rounded, cryo_iterations))
+
+
 
 print('\n=========================================ISS TEST FULL=====================================================\n')
 print('ISS true cartesian coordinates:\n%s \nISS converted cartesian coordinates:\n%s\n' %(state_cart_iss, state_cart_iss_calculated_rounded))
@@ -115,15 +130,35 @@ state_cart_cryo_calculated_rounded_latex = latex_utils.Cart2Latex(state_cart_cry
 state_kep_cryo_degrees_latex = latex_utils.Kep2Latex(state_kep_cryo_degrees)
 state_kep_cryo_calculated_degrees_rounded_latex = latex_utils.Kep2Latex(state_kep_cryo_calculated_degrees_rounded)
 
+dolatex=False
+if dolatex:
+    print('ISS states, in order [true cartesian, converted cartesian, true keplerian, converted keplerian]',
+          state_cart_iss_latex,
+          state_cart_iss_calculated_rounded_latex,
+          state_kep_iss_degrees_latex,
+          state_kep_iss_calculated_degrees_rounded_latex)
+    print('cryo states, in order [true cartesian, converted cartesian, true keplerian, converted keplerian]',
+          state_cart_cryo_latex,
+          state_cart_cryo_calculated_rounded_latex,
+          state_kep_cryo_degrees_latex,
+          state_kep_cryo_calculated_degrees_rounded_latex)
 
 
-print('ISS states, in order [true cartesian, converted cartesian, true keplerian, converted keplerian]',
-      state_cart_iss_latex,
-      state_cart_iss_calculated_rounded_latex,
-      state_kep_iss_degrees_latex,
-      state_kep_iss_calculated_degrees_rounded_latex)
-print('cryo states, in order [true cartesian, converted cartesian, true keplerian, converted keplerian]',
-      state_cart_cryo_latex,
-      state_cart_cryo_calculated_rounded_latex,
-      state_kep_cryo_degrees_latex,
-      state_kep_cryo_calculated_degrees_rounded_latex)
+
+# for i in state_cart_iss:
+#     print(i)
+#     print(misc_utils.get_sigfigs(i))
+# print('\n')
+# for i in state_kep_iss_degrees:
+#     print(i)
+#     print(misc_utils.get_sigfigs(i))
+# print('\n')
+# for i in state_cart_cryo:
+#     print(i)
+#     print(misc_utils.get_sigfigs(i))
+# print('\n')
+# for i in state_kep_cryo_degrees:
+#     print(i)
+#     print(misc_utils.get_sigfigs(i))
+
+
