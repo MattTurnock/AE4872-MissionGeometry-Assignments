@@ -1,4 +1,4 @@
-#Defines a few basic keplerian orbit functions and constants
+#Defines a selection of relevant orbit-related conversions/ functions and constants
 import numpy as np
 from Ass1 import misc_utils
 cos = np.cos
@@ -10,6 +10,7 @@ mu_Sun = 1.327178E11
 mu_Jup = 1.2669E8
 mu_Mars = 4.2832E4
 
+#Function to take the Keplerian state and convert the angles to degrees
 def Kep_Rad2Deg(state_kep_in):
     state_kep = state_kep_in.copy()
     for i in range(len(state_kep)):
@@ -18,6 +19,7 @@ def Kep_Rad2Deg(state_kep_in):
 
     return state_kep
 
+#reverse of Kep_Rad2Deg
 def Kep_Deg2Rad(state_kep_in):
     state_kep = state_kep_in.copy()
     for i in range(len(state_kep)):

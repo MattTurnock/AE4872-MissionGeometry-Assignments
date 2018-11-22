@@ -1,4 +1,4 @@
-
+#Defines a few functions for creating LaTeX matrices for state vectors
 
 def Cart2Latex(state_cart):
     x, y, z, xdot, ydot, zdot = state_cart
