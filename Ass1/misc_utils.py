@@ -1,6 +1,14 @@
 #Define a number of generic mathematical utilities
 
 import numpy as np
+import itertools
+#lists all permutations of 2 lists
+def list_perms(list1, list2):
+    perms_temp = list(itertools.product(list1, list2))
+    perms=[]
+    for perm in perms_temp:
+        perms.append(list(perm))
+    return perms
 
 #Returns integer of the number of significant figures of a number
 def get_sigfigs(number):

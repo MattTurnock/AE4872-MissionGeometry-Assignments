@@ -45,3 +45,5 @@ state_2_theta = kep_orbit_utils.E2theta(state_2_E, state_2_keplerian[1])
 
 print('State 1 [theta, E, M] = [%s, %s, %s]\n' %(misc_utils.round2sigfig(np.rad2deg(state_1_theta), 10), misc_utils.round2sigfig(np.rad2deg(state_1_E), 10), misc_utils.round2sigfig(np.rad2deg(state_1_M),10)))
 print('State 2 [theta, E, M] = [%s, %s, %s]\n' %(misc_utils.round2sigfig(np.rad2deg(state_2_theta), 10), misc_utils.round2sigfig(np.rad2deg(state_2_E), 10), misc_utils.round2sigfig(np.rad2deg(state_2_M), 10)))
+
+
