@@ -1,6 +1,6 @@
 from json_to_dict import constants
 from Ass1.misc_utils import list_perms
-from Ass2.repeating_orbit_utils import do_a_iterations, get_H0
+from Ass2.repeating_orbit_utils import do_a_iterations
 import numpy as np
 from astropy import units as u
 from matplotlib import pyplot as plt
@@ -20,7 +20,7 @@ k=3
 
 js = np.arange(39,49)
 jks = js/k
-i_all = np.linspace(0,180,180)
+i_all = np.linspace(0,180,181)
 
 # jks = [14, 43/3]
 # i_all = [28, 28]
@@ -42,7 +42,7 @@ if calc:
     np.save('out_data', out_data)
 
 out_data = np.load('out_data.npy')
-print(out_data)
+print(out_data,'\n')
 
 split_data = np.split(out_data, np.where(np.diff(out_data[:,0]))[0]+1)
 
@@ -60,6 +60,8 @@ plt.grid()
 plt.ylabel('Inclination, i [deg]')
 plt.xlabel('Orbital altitude, h [km]')
 plt.savefig('repeaters.pdf')
-plt.show()
+#plt.show()
 
+tabulated = out_data[~(out_data[:,1]%30!=0.0), :]
+np.savetxt('out_data_2.csv', tabulated)
 

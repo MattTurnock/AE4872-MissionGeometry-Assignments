@@ -7,10 +7,10 @@ u.sday = u.def_unit('sday', 86164.1004*u.s)
 #print((1*u.sday).to(u.s))
 
 #Functions for less accurate measurement (only Omega)
-def get_H0(j_k, mu=constants["muEarth"], DS=constants["DS"], R=constants["RE"]):
-    r0 = mu**(1/3)*((2*pi)/(DS)*j_k)**(-2/3)
-    H0 = r0 - R
-    return H0
+# def get_H0(j_k, mu=constants["muEarth"], DS=constants["DS"], R=constants["RE"]):
+#     r0 = mu**(1/3)*((2*pi)/(DS)*j_k)**(-2/3)
+#     H0 = r0 - R
+#     return H0
 
 def get_a0(j_k, mu=constants["muEarth"], DS=constants["DS"], return_unit=(u.km)):
     frac = (DS/(2*pi)*j_k**-1)**(2/3)
