@@ -1,8 +1,6 @@
 from json_to_dict import constants
 import numpy as np
 from astropy import units as u
-from Ass1.kep_orbit_utils import get_orbit_period
-from Ass1.misc_utils import get_precision
 pi = np.pi
 u.sday = u.def_unit('sday', 86164.1004*u.s) #redefine sday in astropy to match the one from Wertz
 
