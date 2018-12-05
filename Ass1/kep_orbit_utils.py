@@ -1,6 +1,7 @@
 #Defines a selection of relevant orbit-related conversions/ functions and constants
 import numpy as np
 from Ass1 import misc_utils
+import astropy.units as u
 cos = np.cos
 sin = np.sin
 pi = np.pi
@@ -68,8 +69,12 @@ def get_circular_velocity(mu, orbital_radius):
 def get_escape_velocity(mu, orbital_radius):
     return np.sqrt(2*mu/orbital_radius)
 
-def get_orbit_period(SMA, mu):
-    return 2*pi*np.sqrt(SMA**3 / mu)
+def get_orbit_period(SMA, mu, astropy_units=None):
+    T = 2 * pi * np.sqrt(SMA ** 3 / mu)
+    if astropy_units!=None:
+        return T.to(u.Unit(astropy_units))
+    else:
+        return T
 
 def get_H(mu, SMA, ECC):
     return np.sqrt(mu * SMA * (1 - ECC**2))

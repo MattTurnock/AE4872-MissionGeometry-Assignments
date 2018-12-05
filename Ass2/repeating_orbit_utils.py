@@ -1,6 +1,7 @@
 from json_to_dict import constants
 import numpy as np
 from astropy import units as u
+from Ass1.kep_orbit_utils import get_orbit_period
 from Ass1.misc_utils import get_precision
 pi = np.pi
 u.sday = u.def_unit('sday', 86164.1004*u.s)
@@ -12,6 +13,41 @@ u.sday = u.def_unit('sday', 86164.1004*u.s)
 #     H0 = r0 - R
 #     return H0
 
+# #needs astropy.unit inputs, outputs in rad (but is actually rad/ revolution)
+# def get_DL1(TE, T, astropy_units='rad'):
+#     DL1 = -2*pi*T/TE
+#     DL1 = DL1.decompose()
+#     DL1 = DL1 * u.rad
+#     return DL1.to(u.Unit(astropy_units))
+#
+# def get_i_from_a(a, j_k, J2=constants["J2"], R=constants["RE"], mu=constants["muEarth"], TE=u.sday):
+#     T = get_orbit_period(a, mu, astropy_units='s')
+#     DL1 = get_DL1(TE, T)
+#     jk_term = (j_k**-1 * 2*pi)*u.rad
+#     DL2_noi = (a**2/(3*pi*J2*R**2))/u.rad
+#
+#     inner_bracket_p = DL1 + jk_term
+#     inner_bracket_n = DL1 - jk_term
+#
+#     print(DL2_noi*inner_bracket_p)
+#
+#     i_p = np.arccos(DL2_noi*inner_bracket_p)
+#     i_n = np.arccos(DL2_noi*inner_bracket_n)
+#
+#     return i_p.to(u.deg), i_n
+#
+# a = 7258.69*u.km
+# jk = 14
+#
+# T = get_orbit_period(a, constants["muEarth"], astropy_units='minute')
+# print(T)
+# DL1 = get_DL1(u.sday, T, astropy_units='deg')
+# print(DL1, '\n')
+#
+# i_p_i_n = get_i_from_a(a, jk)
+# print(i_p_i_n)
+###############################################################################################
+#Functions for more accurate things
 def get_a0(j_k, mu=constants["muEarth"], DS=constants["DS"], return_unit=(u.km)):
     frac = (DS/(2*pi)*j_k**-1)**(2/3)
     a0 = frac * mu**(1/3)
@@ -52,8 +88,11 @@ def get_Mdot(a, i, e=0, J2=constants["J2"], mu=constants["muEarth"], R=constants
     Mdot = (Mdot_temp * 180/pi * DS.value)*(u.deg/u.sday)
     return Mdot.to(return_unit)
 
-def get_n(j_k, Omegadot, omegadot, Mdot, Ldot=constants["Ldot"], return_unit=(u.deg/u.sday)):
-    n = j_k*(Ldot -Omegadot) - (omegadot + Mdot)
+def get_n(j_k, Omegadot, omegadot=None, Mdot=None, Ldot=constants["Ldot"], return_unit=(u.deg/u.sday), approach='1'):
+    if approach == '1':
+        n = j_k * (Ldot - Omegadot)
+    elif approach == '2':
+        n = j_k*(Ldot -Omegadot) - (omegadot + Mdot)
     return n.to(return_unit)
 
 def get_a(n, mu=constants["muEarth"], DS=constants["DS"], return_unit=(u.km)):
@@ -67,16 +106,19 @@ def get_a(n, mu=constants["muEarth"], DS=constants["DS"], return_unit=(u.km)):
     a = a_val*(u.km)
     return a.to(return_unit)
 
-def do_a_iterations(j_k, i, e=0, da_precision=5, return_its=False):
+def do_a_iterations(j_k, i, e=0, da_precision=5, return_its=False, approach='1'):
     a0 = get_a0(j_k)
     iterations=0
     running=True
     while running:
         #calc the components
         Omegadot = get_Omegadot(a0,i)
-        omegadot = get_omegadot(a0,i)
-        Mdot = get_Mdot(a0,i)
-        n = get_n(j_k, Omegadot, omegadot, Mdot)
+        if approach=='1':
+            n = get_n(j_k, Omegadot, approach=approach)
+        elif approach=='2':
+            omegadot = get_omegadot(a0,i)
+            Mdot = get_Mdot(a0,i)
+            n = get_n(j_k, Omegadot, omegadot=omegadot, Mdot=Mdot, approach=approach)
         a_new = get_a(n)
         #find difference
         da = a_new - a0
