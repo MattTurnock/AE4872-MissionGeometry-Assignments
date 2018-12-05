@@ -1,5 +1,9 @@
 from json_to_dict import constants
 from Ass1.misc_utils import list_perms
+import sympy as sp
+from sympy import latex
+import pandas as pd
+pd.set_option('precision', 5)
 
 from Ass2.repeating_orbit_utils import do_a_iterations
 import numpy as np
@@ -68,8 +72,17 @@ def docalc_plot(i_all, js, k, approach='1', prnt=True, plot=True, plotshow=True,
         if plotshow: plt.show()
 
     tabulated = out_data[~(out_data[:,1]%interval!=0.0), :]
+    tabulated = np.around(tabulated, decimals=2)
+    # tabulated = tabulated.astype('int')
     if prnt: print('tabulated data: \n', tabulated)
     np.savetxt('out_data%s.csv' %extra, tabulated)
+    #tabulated = np.around(tabulated, decimals=2)
+    # tabulated = pd.DataFrame(data=tabulated, columns=['j', 'i', 'a'])
+    # tabulated = tabulated.astype({'j': 'int', 'i':'int', 'a':'f'})
+    # tabulated = tabulated.to_latex(index=False)
+    print(tabulated)
+
+    np.savetxt("mydata.txt", tabulated, delimiter=' & ', fmt='%i %i %1.3f')#, newline=' \\\\\n')
 
 #Do for approach 1 and approach 2
 docalc_plot(i_all, js, k, approach='2', prnt=True, plot=True, plotshow=False, calc=False, extra='_2')

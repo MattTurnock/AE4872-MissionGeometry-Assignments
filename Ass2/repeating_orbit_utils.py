@@ -53,6 +53,8 @@ def get_a0(j_k, mu=constants["muEarth"], DS=constants["DS"], return_unit=(u.km))
     a0 = frac * mu**(1/3)
     return a0.to(return_unit)
 
+print(get_a0(61/4))
+
 #Functions for more accurate estimate
 def get_Omegadot(a, i, e=0, J2=constants["J2"], mu=constants["muEarth"], R=constants["RE"], DS=constants["DS"], return_unit=(u.deg/u.sday)):
     #this k2 doesn't have the right value because of fancy stuff the book does with units
