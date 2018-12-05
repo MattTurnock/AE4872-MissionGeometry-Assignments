@@ -1,36 +1,15 @@
 from json_to_dict import constants
 from Ass1.misc_utils import list_perms
-import sympy as sp
-from sympy import latex
-import pandas as pd
-pd.set_option('precision', 5)
-
 from Ass2.repeating_orbit_utils import do_a_iterations
 import numpy as np
 from astropy import units as u
 from matplotlib import pyplot as plt
-from astropy.table import Table
 pi = np.pi
 
-##########################################################################################
-#Approach 1 (Omega effect only)
-
-
-
-
-##########################################################################################
-#Approach 2 (both)
-
 k=3
-
 js = np.arange(39,49)
 jks = js/k
 i_all = np.linspace(0,180,181)
-#i_all = np.linspace(0,180,10)
-
-# jks = [14, 43/3]
-# i_all = [28, 28]
-#def docalc():
 
 #Function definition to do all calculations
 def docalc_plot(i_all, js, k, approach='1', prnt=True, plot=True, plotshow=True, calc=True, extra='', interval=30, linewidth=1.5):
@@ -62,7 +41,7 @@ def docalc_plot(i_all, js, k, approach='1', prnt=True, plot=True, plotshow=True,
             plt.plot(xs, ys, linewidth=linewidth)
         legend=[]
         for j in js:
-            string = "(%s, 3)" %j
+            string = "(j,k) = (%s, 3)" %j
             legend.append(string)
         plt.legend(legend, markerscale=5., bbox_to_anchor=(1.05, 1))
         plt.grid()
@@ -72,17 +51,8 @@ def docalc_plot(i_all, js, k, approach='1', prnt=True, plot=True, plotshow=True,
         if plotshow: plt.show()
 
     tabulated = out_data[~(out_data[:,1]%interval!=0.0), :]
-    tabulated = np.around(tabulated, decimals=2)
-    # tabulated = tabulated.astype('int')
     if prnt: print('tabulated data: \n', tabulated)
-    np.savetxt('out_data%s.csv' %extra, tabulated)
-    #tabulated = np.around(tabulated, decimals=2)
-    # tabulated = pd.DataFrame(data=tabulated, columns=['j', 'i', 'a'])
-    # tabulated = tabulated.astype({'j': 'int', 'i':'int', 'a':'f'})
-    # tabulated = tabulated.to_latex(index=False)
-    print(tabulated)
-
-    np.savetxt("mydata.txt", tabulated, delimiter=' & ', fmt='%i %i %1.3f')#, newline=' \\\\\n')
+    np.savetxt('out_data%s.txt' %extra, tabulated, delimiter=' & ', newline=' \\\\\n', fmt='%i & %i & %1.2f')
 
 #Do for approach 1 and approach 2
 docalc_plot(i_all, js, k, approach='2', prnt=True, plot=True, plotshow=False, calc=False, extra='_2')
@@ -97,24 +67,23 @@ split_data_2 = np.split(out_data_2, np.where(np.diff(out_data_2[:, 0]))[0] + 1)
 
 linewidth=1.0
 plot=True
-plotshow=True
+plotshow=False
 if plot:
     plt.figure()
     for data in split_data_1:
         xs = data[:, 2]
         ys = data[:, 1]
-        plt.plot(xs, ys, linewidth=linewidth )#, s=1.0)
+        plt.plot(xs, ys, linestyle='dashed', linewidth=linewidth )
     for data in split_data_2:
         xs = data[:, 2]
         ys = data[:, 1]
-        plt.plot(xs, ys, linestyle='dashed', linewidth=linewidth)#, s=1.0)
+        plt.plot(xs, ys, linewidth=linewidth)
     legend = []
     for j in js:
-        string = "(%s, 3)" % j
+        string = "(j,k) = (%s, 3)" % j
         legend.append(string)
     plt.legend(legend, markerscale=5.,bbox_to_anchor=(1.05, 1))
     plt.tight_layout()
-    #plt.legend(loc="lower left", markerscale=2., scatterpoints=1, fontsize=10)
     plt.grid()
     plt.ylabel('Inclination, i [deg]')
     plt.xlabel('Orbital altitude, h [km]')
