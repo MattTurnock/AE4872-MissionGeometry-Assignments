@@ -1,6 +1,7 @@
 #Function definitions for converting Cartesian --> Keplerian
 import numpy as np
 from Ass1 import kep_orbit_utils, misc_utils
+from astropy import units as u
 
 def get_signs_hats(N, ECCvector, rvector, hvector):
     Nhat = N / np.linalg.norm(N)
@@ -19,7 +20,7 @@ def get_signs_hats(N, ECCvector, rvector, hvector):
 
     return sign_omega, sign_theta, Nhat, ECChat, rhat
 
-def Cart2Kep(state_cart, mu=kep_orbit_utils.mu_Earth):
+def Cart2Kep(state_cart, mu=kep_orbit_utils.mu_Earth, do_units_out=False, units_out=["m","deg"]):
 
     rvector = np.vstack(list(np.float128(state_cart[0:3])))
     Vvector = np.vstack(list(np.float128(state_cart[3:6])))
@@ -51,6 +52,21 @@ def Cart2Kep(state_cart, mu=kep_orbit_utils.mu_Earth):
         if i!=0 and i!=1:
             if state[i] < 0 :
                 state[i]=misc_utils.angle2positive(state[i])
+
+    if do_units_out:
+        a = SMA*u.m
+        e = ECC*u.one
+        i = INC*u.rad
+        Omega = Omega*u.rad
+        omega = omega*u.rad
+        theta = theta*u.rad
+        state = [a.to(units_out[0]),
+                 e,
+                 i.to(units_out[1]),
+                 Omega.to(units_out[1]),
+                 omega.to(units_out[1]),
+                 theta.to(units_out[1])]
+
     return state
 
 # Do an example if main
