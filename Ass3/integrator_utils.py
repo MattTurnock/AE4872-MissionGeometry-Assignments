@@ -1,6 +1,8 @@
 import numpy as np
 from json_to_dict import constants
 from matplotlib import pyplot as plt
+from Ass1.Kep2Cart_utils import Kep2Cart
+from Ass1.Cart2Kep_utils import Cart2Kep
 pi = np.pi
 
 
@@ -57,9 +59,51 @@ def do_err_plot(dts, err, show=True, save=False, title=None, method="TEST", figu
         plt.title(title)
 
     plt.legend(legend)
-    if save: plt.savefig("%s_car_error.pdf" % method)
+    if save: plt.savefig("car_%s_error.pdf" %method)
     if show: plt.show()
     plt.grid()
+
+
+def get_integrator_table_orbit(kepstate_0, t_end, dts, t0=0, method="RK4", printing=False):
+
+    a_true = kepstate_0[0]
+    e_true = kepstate_0[1]
+    cartsate_0 = Kep2Cart(kepstate_0)
+    X0 = cartsate_0
+
+    fulldata = np.zeros([len(dts), len(kepstate_0)+1])
+    fulldata[:,0] = dts
+    fulldata[0, 1:] = kepstate_0
+
+    for j in range(len(dts)):
+
+        dt = dts[j]
+
+        ts = np.arange(t0, t_end, dt)
+
+        Xall, Xdots = do_integration(X0, ts, method=method)
+        cartstate_end = Xall[-1, 1:]
+        kepstate_end = Cart2Kep(cartstate_end, do_units_out=True)
+
+        for el in range(len(kepstate_end)):
+            kepstate_end[el] = kepstate_end[el].value
+
+        fulldata[j, 1:] = kepstate_end
+
+        if printing: print(kepstate_end)
+
+    if method=="RK4": factor=4
+    elif method=="euler": factor=1
+
+    table = np.zeros([len(dts), 6])
+    table[:,0] = dts
+    table[:,1] = fulldata[:,1]
+    table[:,2] = fulldata[:,2]
+    table[:,3] = a_true - fulldata[:,1]
+    table[:,4] = e_true - fulldata[:,2]
+    table[:,5] = factor*(t_end - t0)/fulldata[:,0]
+    return table
+
 
 
 ############################################################################################################################
