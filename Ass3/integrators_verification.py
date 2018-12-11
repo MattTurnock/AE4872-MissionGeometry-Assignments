@@ -1,9 +1,9 @@
+#Verification script for integrator functions
+####################################################################################3
 from Ass3.integrator_utils import do_integration
 import numpy as np
 from astropy import units as u
 from Ass1.Kep2Cart_utils import Kep2Cart
-from Ass1.Cart2Kep_utils import Cart2Kep
-from matplotlib import pyplot as plt
 pi = np.pi
 np.set_printoptions(suppress=True)
 
@@ -18,9 +18,6 @@ kepstate = [a.to(u.m).value, e.to(u.one).value, i.to(u.rad).value, Omega.to(u.ra
 cartsate = Kep2Cart(kepstate)
 
 X0 = cartsate
-# t0 = 0
-# t_end = ((1*u.wk).to(u.s)).value
-# ts = np.linspace(t0, t_end, 10000)
 dt=10
 ts = np.arange(0,30,dt)
 

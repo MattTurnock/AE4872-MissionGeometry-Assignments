@@ -1,19 +1,17 @@
+#Utility functions for integrators
+################################################################################
 import numpy as np
 from json_to_dict import constants
 from matplotlib import pyplot as plt
 from Ass1.Kep2Cart_utils import Kep2Cart
 from Ass1.Cart2Kep_utils import Cart2Kep
 pi = np.pi
-
-
 #############################################################################################################################
 #Misc things
-
 
 def get_A_car(X):
     A = np.array([[0, 1],
                   [0, 0]])
-
     return A
 
 def get_fulldata_car(Xall, Xdots):
@@ -21,12 +19,9 @@ def get_fulldata_car(Xall, Xdots):
     fulldata[:, 0] = Xall[:, 0]
     fulldata[:, 1:3] = Xall[:, 1:3]
     fulldata[:, 3] = Xdots[:, 2]
-
     return fulldata
 
 def get_integrator_table_car(X0, dts, t_end, tablen, B,x_end_true, v_end_true, t0=0,method="RK4"):
-
-
     euler_table = np.zeros([len(dts),tablen])
     euler_table[:, 0] = dts
     #print(euler_table)
@@ -63,9 +58,7 @@ def do_err_plot(dts, err, show=True, save=False, title=None, method="TEST", figu
     if show: plt.show()
     plt.grid()
 
-
 def get_integrator_table_orbit(kepstate_0, t_end, dts, t0=0, method="RK4", printing=False):
-
     a_true = kepstate_0[0]
     e_true = kepstate_0[1]
     cartsate_0 = Kep2Cart(kepstate_0)
@@ -78,7 +71,6 @@ def get_integrator_table_orbit(kepstate_0, t_end, dts, t0=0, method="RK4", print
     for j in range(len(dts)):
 
         dt = dts[j]
-
         ts = np.arange(t0, t_end, dt)
 
         Xall, Xdots = do_integration(X0, ts, method=method)
@@ -104,12 +96,8 @@ def get_integrator_table_orbit(kepstate_0, t_end, dts, t0=0, method="RK4", print
     table[:,5] = factor*(t_end - t0)/fulldata[:,0]
     return table
 
-
-
 ############################################################################################################################
 #Euler integrator thignsa
-
-
 
 mu = 100.
 r = 12.
@@ -118,25 +106,20 @@ dt = 1
 #vector to find derivative from the initial vectorino
 def get_A_orbit(X, mu=constants["muEarth"].to("m ** 3 / (s * s)").value):
     r = np.linalg.norm(X[0:3])
-    #print(mu)
     m = mu/r**3
-    #print(m)
     A = np.array([[0, 0, 0, 1, 0, 0],
                   [0, 0, 0, 0, 1, 0],
                   [0, 0, 0, 0, 0, 1],
                   [-m, 0, 0, 0, 0, 0],
                   [0, -m, 0, 0, 0, 0],
                   [0, 0, -m, 0, 0, 0]])
-
     return A
 
 def do_euler_step(Xn, dt, get_A, B):
     A = get_A(Xn)
     psi = np.matmul(A, Xn) + B
     Xnp1 = Xn + dt*psi
-
     return Xnp1, psi
-
 
 ###################################################################################################################################
 # RK4 integrator things
@@ -147,28 +130,20 @@ def f_RK4(A, X, B):
 
 # get k1-4 given the vector
 def get_ks(X, dt, get_A, B, return_As=False):
-
-    #print(X)
     A1 = get_A(X)
-    #print(A1)
     k1 = f_RK4(A1, X, B)
-    #print(k1)
-    #print(A1, k1)
 
     Xk2 = X + 0.5*dt*k1
     A2 = get_A(Xk2)
     k2 = f_RK4(A2, Xk2, B)
-    #print(A2, k2)
 
     Xk3 = X + 0.5 * dt * k2
     A3 = get_A(Xk3)
     k3 = f_RK4(A3, Xk3, B)
-    #print(A3, k3)
 
     Xk4 = X + dt*k3
     A4 = get_A(Xk4)
     k4 = f_RK4(A4, Xk4, B)
-    #print(A4, k4)
 
     if return_As:
         return k1,k2,k3,k4, A1,A2,A3,A4
@@ -177,7 +152,6 @@ def get_ks(X, dt, get_A, B, return_As=False):
 
 def get_RK4_psi(k1,k2,k3,k4):
     psi = 1/6 * (k1 + 2*k2 + 2*k3 + k4)
-    #print(psi)
     return psi
 
 def do_RK4_step(Xn, dt, get_A, B, return_ks=False):
@@ -191,7 +165,6 @@ def do_RK4_step(Xn, dt, get_A, B, return_ks=False):
     else:
         return Xnp1, psi
 
-
 ############################################################################################################################
 #combined data getter
 
@@ -201,7 +174,6 @@ def do_integration(X0, ts, get_A=get_A_orbit, B=None, method="RK4", return_ks=Fa
             B = np.zeros(np.shape(X0))
     except ValueError:
         print("There was a value error, but if your input was an array don't worry about it")
-
 
     if method == "euler":
         integrator = do_euler_step
@@ -215,7 +187,6 @@ def do_integration(X0, ts, get_A=get_A_orbit, B=None, method="RK4", return_ks=Fa
     Xdots[:, 0] = ts
 
     kall = []
-
     Xn = X0
     for q in range(len(ts) - 1):
         Xall[q, 1:] = Xn
@@ -226,7 +197,6 @@ def do_integration(X0, ts, get_A=get_A_orbit, B=None, method="RK4", return_ks=Fa
             kall.append(ks)
         else:
             Xnp1, Xdot_n = integrator(Xn, dt, get_A, B)
-        #print(Xnp1)
         Xdots[q, 1:] = Xdot_n
 
         Xn = Xnp1

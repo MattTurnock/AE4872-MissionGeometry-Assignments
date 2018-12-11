@@ -1,15 +1,11 @@
+#Does calculations for INTEG-2
+####################################################################################
 import numpy as np
 from astropy import units as u
-from poliastro.bodies import Earth
-from poliastro.twobody import Orbit
-from Ass3.integrator_utils import do_integration, get_integrator_table_orbit
-from json_to_dict import constants
-from Ass1.Cart2Kep_utils import Cart2Kep
-from Ass1.Kep2Cart_utils import Kep2Cart
+from Ass3.integrator_utils import get_integrator_table_orbit
 from matplotlib import pyplot as plt
 pi = np.pi
 np.set_printoptions(suppress=True)
-
 
 a = 7500*u.km
 a_true = 7500*1000
@@ -19,16 +15,14 @@ i = 1E-100*u.deg
 Omega = 0*u.deg
 omega = 0*u.deg
 theta = 0*u.deg
-
 kepstate_0 = [a.to(u.m).value, e.to(u.one).value, i.to(u.rad).value, Omega.to(u.rad).value, omega.to(u.rad).value, theta.to(u.rad).value]
 
 t0 = 0
 t_end = ((1*u.wk).to(u.s)).value
 dts = [0.1, 1, 10, 100, 1000, 10000, 100000]
-
 ###############################################################################################################################################
 # doing methods
-calc=False
+calc=True
 printing=True
 if calc:
     euler_table = get_integrator_table_orbit(kepstate_0, t_end, dts, t0=0, method="euler", printing=printing)
@@ -57,11 +51,10 @@ euler_calc_no = euler_table[:,-1]
 RK4_dist_error = abs(RK4_table[:,3])/1000
 RK4_calc_no = RK4_table[:,-1]
 
-plot=False
+plot=True
 plt.figure()
 plt.loglog(RK4_calc_no, RK4_dist_error)
 plt.loglog(euler_calc_no, euler_dist_error)
-
 plt.legend(["RK4", "Euler"])
 plt.ylabel("Final semi-major axis error [km]")
 plt.xlabel("Number of derivative evaluations, N")
