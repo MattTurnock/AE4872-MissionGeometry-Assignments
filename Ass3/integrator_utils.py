@@ -25,10 +25,20 @@ def get_integrator_table_car(X0, dts, t_end, tablen, B,x_end_true, v_end_true, t
     euler_table = np.zeros([len(dts),tablen])
     euler_table[:, 0] = dts
     #print(euler_table)
-    for q in range(len(dts)):
+    dtno = len(dts)
+    a_percent = int(dtno/100)
+    #print(a_percent)
+    for q in range(dtno):
+        if a_percent != 0:
+            if q%a_percent == 0:
+                print(int(q/a_percent), '%')
+        else:
+            print('too small for % counter')
         dt = dts[q]
         ts = np.arange(t0, t_end+dt, dt)
-        Xall, Xdots = do_integration(X0, ts, get_A=get_A_car, B=B, method=method)
+        ts[-1] = t_end
+        #print(ts)
+        Xall, Xdots = do_integration(X0, ts, get_A=get_A_car, B=B, method=method, suppress=True)
         X_end = get_fulldata_car(Xall, Xdots)[-1]
 
         n = len(ts)
@@ -68,12 +78,22 @@ def get_integrator_table_orbit(kepstate_0, t_end, dts, t0=0, method="RK4", print
     fulldata[:,0] = dts
     fulldata[0, 1:] = kepstate_0
 
-    for j in range(len(dts)):
+    dtno = len(dts)
+    a_percent = int(dtno / 100)
+    for j in range(dtno):
+        if a_percent != 0:
+            if j%a_percent == 0:
+                print(int(j/a_percent), '%')
+        else:
+            print('too small for % counter')
 
         dt = dts[j]
+        #print(dt)
         ts = np.arange(t0, t_end, dt)
+        ts[-1] = t_end
+        #print(ts)
 
-        Xall, Xdots = do_integration(X0, ts, method=method)
+        Xall, Xdots = do_integration(X0, ts, method=method, suppress=True)
         cartstate_end = Xall[-1, 1:]
         kepstate_end = Cart2Kep(cartstate_end, do_units_out=True)
 
@@ -168,12 +188,13 @@ def do_RK4_step(Xn, dt, get_A, B, return_ks=False):
 ############################################################################################################################
 #combined data getter
 
-def do_integration(X0, ts, get_A=get_A_orbit, B=None, method="RK4", return_ks=False):
+def do_integration(X0, ts, get_A=get_A_orbit, B=None, method="RK4", return_ks=False, suppress=False):
     try:
         if B == None:
             B = np.zeros(np.shape(X0))
     except ValueError:
-        print("There was a value error, but if your input was an array don't worry about it")
+        if suppress==False:
+            print("There was a value error, but if your input was an array don't worry about it")
 
     if method == "euler":
         integrator = do_euler_step

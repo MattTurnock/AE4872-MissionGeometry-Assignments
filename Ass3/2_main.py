@@ -20,10 +20,11 @@ kepstate_0 = [a.to(u.m).value, e.to(u.one).value, i.to(u.rad).value, Omega.to(u.
 t0 = 0
 t_end = ((1*u.wk).to(u.s)).value
 dts = [0.1, 1, 10, 100, 1000, 10000, 100000]
+dts = np.logspace(0, 4, 100)
 ###############################################################################################################################################
 # doing methods
-calc=True
-printing=True
+calc=False
+printing=False
 if calc:
     euler_table = get_integrator_table_orbit(kepstate_0, t_end, dts, t0=0, method="euler", printing=printing)
     np.save("orbit_error_table_euler", euler_table)

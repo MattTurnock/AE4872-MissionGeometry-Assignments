@@ -32,7 +32,7 @@ B = np.array([0,
               a0])
 ts = np.linspace(t0, t_end, 100)
 
-Xall_e, Xdots_e = do_integration(X0, ts, get_A=get_A_car, B=B, method="euler")
+Xall_e, Xdots_e = do_integration(X0, ts, get_A=get_A_car, B=B, method="euler", suppress=True)
 fulldata_e = get_fulldata_car(Xall_e, Xdots_e)
 
 #has cols: [t, x, v, a]
@@ -40,9 +40,11 @@ print(fulldata_e[-1], '\n')
 print('Doing a full euler dt test. Following array has columns [dt, x_end, v_end, error x_end, error v_end, number of evaluations]')
 
 dts = [0.001, 0.01, 0.1, 1, 10, 20]
+dts = np.logspace(-3, 1.2,  1000)
+#print(dts)
 tablen=6
 
-calc=True
+calc=False
 if calc:
     euler_table = get_integrator_table_car(X0, dts, t_end, tablen, B, x_end_true, v_end_true, method="euler")
     np.save('car_error_table_euler', euler_table)
@@ -75,14 +77,14 @@ X0 = np.array([D0,
 B = np.array([0,
               a0])
 
-Xall_rk, Xdots_rk = do_integration(X0, ts, get_A=get_A_car, B=B, method="RK4")
+Xall_rk, Xdots_rk = do_integration(X0, ts, get_A=get_A_car, B=B, method="RK4", suppress=True)
 fulldata_rk = get_fulldata_car(Xall_rk, Xdots_rk)
 
 #has cols: [t, x, v, a]
 print(fulldata_rk[-1], '\n')
 print('Doing a full RK4 dt test. Following array has columns [dt, x_end, v_end, error x_end, error v_end, number of evaluations]')
 
-dts = [0.001, 0.01, 0.1, 1, 10, 20]
+# dts = [0.001, 0.01, 0.1, 1, 10, 20]
 tablen=6
 
 if calc:
@@ -101,9 +103,9 @@ RK4_calc_no = RK_table[:,-1]
 
 #Make the plot
 plt.figure()
-plt.plot(RK4_calc_no, RK4_dist_error, linewidth=3)
-plt.plot(euler_calc_no, euler_dist_error)
-plt.ylim([0, 10])
+plt.loglog(RK4_calc_no, RK4_dist_error)#, linewidth=3)
+plt.loglog(euler_calc_no, euler_dist_error)
+#plt.ylim([0, 10])
 plt.legend(["RK4", "Euler"])
 plt.ylabel("Final distance eror [m]")
 plt.xlabel("Number of derivative evaluations, N")
