@@ -1,11 +1,14 @@
-from sympy.solvers import solve
-from sympy import *
-from sympy.core.symbol import symbols
-from sympy.solvers.solveset import nonlinsolve
-from sympy import Symbol
+# from sympy.solvers import solve
+# from sympy import *
+# from sympy.core.symbol import symbols
+# from sympy.solvers.solveset import nonlinsolve
+# from sympy import Symbol
+import itertools
 
-
-
+this = ["".join(seq) for seq in itertools.product("01", repeat=9)]
+permutations = len(this)
+print(permutations)
+print(this)
 
 
 
