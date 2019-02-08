@@ -8,64 +8,82 @@ __version__ = "1.0"
 ########################################################################################################################
 import numpy as np
 import pandas as pd
-import itertools, random
-from Ass4.optim1_utils import himmelblau
 
 ########################################################################################################################
 #********* Misc Functions**************************
-# Define himmelblau for use in the GA
-def himmelblau2(x1x2List):
-    x1, x2 = x1x2List
-    return (x1**2 + x2 - 11)**2 + (x1 + x2**2 - 7)**2
 
+def himmelblau2(x1x2List):
+    """
+    Define himmelblau for use in the GA
+    :param x1x2List:  a length-2 list containing x1 and x2 to be passed to Himmelblau
+    :return y: The evaluated Himmelblau function
+    """
+    x1, x2 = x1x2List
+    y = (x1**2 + x2 - 11)**2 + (x1 + x2**2 - 7)**2
+    return y
 
 #######################################################################################################################
 #********** Genetic Algorithm Functions************
 
-# Function to generate standard  dataframe from numpy parameter data array
 def getParameterData(parameterDataTemp, columns=["bitLength", "LB", "UB"]):
+    """
+    Function to generate standard pandas  dataframe from numpy parameter data array
+    :param parameterDataTemp: A numpy-style version of the dataframe, nominally containing bit-length, LB and UB columns
+    :param columns: Column labels. Nominally as shown
+    :return: the Pandas dataframe representation of parameter data
+    """
     parameterData = pd.DataFrame(data=parameterDataTemp, columns=columns)
     return parameterData
 
-# Function to create a random bit representation (chromosome), based on inputted parameterData
 def get_randChrom(parameterData):
+    """
+    Function to create a random bit representation (chromosome), based on inputted parameterData
+    :param parameterData: The pandas dataframe representation of parameter data
+    :return chrom: The randomly generated chromosome
+    """
     chrom = np.random.randint(2, size=sum(parameterData.loc[:, "bitLength"]))
     return chrom
 
 def buildInitialGenome(parameterData, populationSize=100):
+    """
+    Function to build the initial genome (ie population)
+    :param parameterData: The pandas datafram representation of parameter data
+    :param populationSize: The size of population. ie number of chromosomes to generate. Default is 100
+    :return genome: A randomly generated genome
+    """
     chromLength = sum(parameterData.loc[:, "bitLength"])
     genome = np.zeros((populationSize, chromLength))
     for i in range(populationSize):
         genome[i, :] = get_randChrom(parameterData)
     return genome
 
-# Function to add xns to the end column of an initial parameterData dataframe
 def add_xns(parameterData, chrom):
-
+    """
+    Function to add xns to the end column of an initial parameterData dataframe
+    :param parameterData: The pandas dataframe representation of parameter data
+    :param chrom: The chromosome to generate the data frame from
+    :return parameterDataNew: Like parameterData with an appended column for parameter values
+    """
     xns = []
     for n in range(len(parameterData)):
         # Define SN1
         SN1 = sum(parameterData.loc[:n, "bitLength"])
-
         # Define SN2
         if n == 0:
             SN2 = 0
         else:
             SN2 = sum(parameterData.loc[:(n-1), "bitLength"])
-            # print("SN2 is %s" % SN2)
 
         # Define Nn, LBn, UBn, and use them to define Delta_n
         Nn = parameterData.loc[n, "bitLength"]
         LBn = parameterData.loc[n, "LB"]
         UBn = parameterData.loc[n, "UB"]
         Delta_n = (UBn - LBn)/(2**float(Nn) - 1)
-        # print("IT IS %s" %Delta_n)
 
         # Define bitSum with a for loop. Note the slightly odd i behaviour from python indexing
         bitSum=0
         for i in range(SN2, SN1):
             bi = chrom[i]
-            # print("Nn is: %s. i is: %s. power is %s" %(Nn, i, SN1 - (i+1)))
             two = 2**(SN1 - (i+1))
             bitSum += (bi * two)
 
@@ -78,9 +96,12 @@ def add_xns(parameterData, chrom):
     parameterDataNew.loc[:, "xn"] = xns
     return parameterDataNew
 
-# Function to get a list of parent pairs, given an array of parents
 def get_ParentPairs(parents):
-
+    """
+    Function to get a list of parent pairs, given an array of parents
+    :param parents: List of all parent chromosomes
+    :return parentPairs: A list of randomly generated pairs of parents
+    """
     # If there are an odd number of parents, one cannnot make pairs from them, so dont allow it
     if len(parents)%2 != 0:
         print("Length of Parents is not even, illegal operation")
@@ -98,15 +119,18 @@ def get_ParentPairs(parents):
         parent2 = np.random.choice(parentIndices)
         parentIndices.remove(parent2)
         parentPairs.append((parents[parent1], parents[parent2]))
-
         # When parentIndices is empty, loop is over
         if len(parentIndices) == 0: running = False
 
     return parentPairs
 
-# Function to get the children given the list of parent pairs. Set split index to an integer if it must be enforced
 def get_children(parentPairs, splitIndex_base="random"):
-
+    """
+    Function to get the children given the list of parent pairs. Set split index to an integer if it must be enforced
+    :param parentPairs: List of parent pairs to generate children from
+    :param splitIndex_base: Option to use random crossover point, or impose it
+    :return children: A list of the children. Same format as a genome
+    """
     # Open empty array to dump the new children
     children = []
     # For loop that iterates through parentPairs and mixes them according to splitIndex
@@ -135,10 +159,15 @@ def get_children(parentPairs, splitIndex_base="random"):
         children.append(child1)
         children.append(child2)
     # Return children as an array
-    return np.array(children)
+    children = np.array(children)
+    return children
 
-# Simple function to flip a bit
 def flipBit(bitValue):
+    """
+    Simple function to flip a bit
+    :param bitValue: The input bit value (1 or 0)
+    :return newBitValue: The flipped bit value
+    """
     if bitValue == 1:
         newBitValue = 0
     elif bitValue == 0:
@@ -149,15 +178,21 @@ def flipBit(bitValue):
     return newBitValue
 
 
-# Function definition to mutate the children (harsh I know but it has to be done)
 def mutateChildren(children, mutationRate=0.1/100):
+    """
+    Function definition to mutate the children (harsh I know but it has to be done)
+    :param children: The children genome that are to be mutated (can also input any genome for mutation)
+    :param mutationRate: The rate of mutation per bit
+    :return mutatedChildren: The genome-like list of mutated children
+    """
     # Set up the mutatedChildren array from the original one, and run a for loop through each child
     mutatedChildren = np.copy(children)
     for childIndex in range(len(children)):
         child = children[childIndex]
         # Run another for loop for each bit of the chromosome of the child
         for bitIndex in range(len(child)):
-            # If the random number is less than the mutation rate, mutate the child's bit and append to the mutatedChildren array
+            # If the random number is less than the mutation rate, mutate the child's bit and append to the
+            # mutatedChildren array
             chance = np.random.random()
             if chance < mutationRate:
                 bit = child[bitIndex]
@@ -167,13 +202,16 @@ def mutateChildren(children, mutationRate=0.1/100):
     return mutatedChildren
 
 
-# Function definition to calculate fitness (+ve better) given an input function, parameterData including xns, and the optimisation mode
+#
 def checkFitness(inputFunction, parameterDataNew, optimisation="min"):
     """
-    IMPORTANT NOTE:
-    Currently this function does not account for inputFunction that can have -ve outcomes
+    Function definition to calculate fitness (+ve better) given an input function, parameterData including xns, and the
+    optimisation mode. Note that it does not account for inputFunction that can have negative outcomes
+    :param inputFunction: The input, ie objective, function that is used by the GA
+    :param parameterDataNew: The pandas dataframe containing a chromosome's parameter values
+    :param optimisation: The option to choose if function should be minimised or maximised
+    :return fitness: The fitness of the chromosome. Bigger is always more fit
     """
-
     # Put xns in a simple list to give to the input function
     xns = parameterDataNew.loc[:, "xn"]
     # Pass xns to input function. Note that input to the function MUST be as a list in its own definition also
@@ -189,7 +227,8 @@ def checkFitness(inputFunction, parameterDataNew, optimisation="min"):
 
 
 def doGeneticAlgorithm(parameterData, inputFunction, optimisation="min", convergenceType="runCount",
-                       convergenceConditions=[5], printingFull=False, printRunIndex=False, populationSize=100, mutationRate=0.1 / 100):
+                       convergenceConditions=[5], printingFull=False, printRunIndex=False,
+                       populationSize=100, mutationRate=0.1 / 100):
     """
 
     :param parameterData: Parameter data input as a pandas dataframe
@@ -197,8 +236,7 @@ def doGeneticAlgorithm(parameterData, inputFunction, optimisation="min", converg
     :param optimisation: The optimisation type for the given function. Eg we may want to minimise or maximise the input
     function
     :param convergenceType: Currently allowed types are "runCount" and "userDefined". runCount ends after a certain
-    number of runs, userDefined implements a % based convergence condition, also with a maximum number of allowed
-    identical iterations (SECOND PART NOT CURRENTLY IMPLEMENTED)
+    number of runs, userDefined implements a % based convergence condition, also with a minimum number of runs implemented
     :param convergenceConditions: List of convergence conditions depending on convergenceType
     :param printingFull: Adds more printing info, usually leave false
     :param printingRunIndex: Simply prints the runIndex to give an idea of how far through we are
@@ -210,7 +248,6 @@ def doGeneticAlgorithm(parameterData, inputFunction, optimisation="min", converg
 
     # Build initial random genome
     initialGenome = buildInitialGenome(parameterData, populationSize=populationSize)
-
     # Intialise a bunch of parameters for use in later loops
     optimalChromosomeHistory = []
     genome = initialGenome
@@ -291,88 +328,3 @@ def doGeneticAlgorithm(parameterData, inputFunction, optimisation="min", converg
     optimalFitnesses = np.array(optimalFitnesses)
 
     return (optimalChromosomes, optimalParameterDatas, optimalFitnesses)
-
-
-########################################################################################################################
-# Testing code below
-#
-# np.random.seed(12)
-# parameterData_temp = np.array([[3, 0, 5],
-#                                [32, 0, 5],
-#                                [4, 0, 5]])
-#
-# parameterData = pd.DataFrame(data=parameterData_temp, columns=["bitLength", "LB", "UB"])
-# # print(parameterData.loc[:0, "bitLength"])
-# # parameterData.loc[:,"cock"] = [1,2,3]
-# print(parameterData)
-# chromLength = sum(parameterData.loc[:, "bitLength"])
-# # print(chromLength)
-#
-# chromCount = 100
-# chromArray = np.zeros((chromCount, chromLength))
-# for i in range(chromCount):
-#
-#     chromSample = get_randChrom(parameterData)
-#     chromArray[i, :] = chromSample
-#     # bitRepSamples = np.vstack((bitRepSamples, bitRepSample))
-#     # print(add_xns(parameterData, bitRepSample))
-#
-# parentPairs = get_ParentPairs(chromArray)
-# children = get_children(parentPairs)
-#
-# mutationRate = 0.1/100
-# # print(children)
-# mutatedChildren = mutateChildren(children, mutationRate=mutationRate)
-# # print(mutatedChildren)
-# #
-# # print("COCK")
-# # print(buildInitialGenome(parameterData, populationSize=10))
-#
-# testChrom = mutatedChildren[0]
-# print(testChrom)
-#
-# def testFunction(x1x2x3List):
-#     x1, x2, x3 = x1x2x3List
-#     y = 2*x1**2 - 3*x1*x2 + 6*x3**3 -7
-#     return abs(y)
-#
-# parameterDataNew = add_xns(parameterData, testChrom)
-# print(checkFitness(testFunction, parameterDataNew))
-# print(parameterDataNew)
-
-# START HERE TRYING TO WRITE THE FULL FUNCTION FOR GENETIC ALGORITHMOS
-# --> First initialise the population, then go ahead with fitness claculations,
-#     will need to add functions for full population fitness checks and for convergence checks etc
-
-# from matplotlib import pyplot as plt
-#
-# # np.random.seed(12)
-# parameterData_temp = np.array([[32, 0, 5],
-#                                [32, 0, 5]])
-#
-# parameterData = pd.DataFrame(data=parameterData_temp, columns=["bitLength", "LB", "UB"])
-#
-# inputFunction = himmelblau2
-# optimisation = "min"
-# # convergenceType = "userDefined"
-# # convergenceConditions = [0.1/100, 3]  # Fraction followed by maximum identical iterations
-# convergenceType = "runCount"
-# convergenceConditions = [100]  # This one is used for if convergence type is by run Number
-#
-# printingFull = False
-# printRunIndex = True
-# populationSize = 100
-# mutationRate = 0.1/100
-#
-# geneticHistory = doGeneticAlgorithm(parameterData, himmelblau2, optimisation=optimisation, convergenceType=convergenceType,
-#                        convergenceConditions=convergenceConditions, printingFull=printingFull, printRunIndex=printRunIndex,
-#                          populationSize=populationSize, mutationRate=mutationRate)
-#
-# fitnesses = []
-# iterations = range(len(geneticHistory))
-# for i in iterations:
-#     fitnesses.append(geneticHistory[i][2])
-#
-# plt.figure()
-# plt.plot(iterations, fitnesses)
-# plt.show()

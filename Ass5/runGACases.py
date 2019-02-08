@@ -1,6 +1,14 @@
-import numpy as np
+#!/usr/bin/env python
+
+"""test.py: Runs the Himmelblau GA for the OPTIM-6 assignment"""
+__author__      = "Matthew Turnock"
+__email__ = "matthew.turnock1@gmail.com"
+__version__ = "1.0"
+
+########################################################################################################################
 from matplotlib import pyplot as plt
 import os
+import sys
 from Ass5.optim6_utils import *
 
 # Function to save data to file (because the calculations take FOREVER)
@@ -36,11 +44,12 @@ def loadData(bitLength, convergenceTypeIndex, baseSavename="optimal%s_bit%s_con%
 
     return optimalChromosomes, optimalFitnesses
 
-
+########################################################################################################################
 
 # A bunch of parameters for saving the files (not related to GA)
 dataDirBase = "himmelblau_data_%s"
 parameterDataDir = "parameterDataCSVs"
+plotSavenameBase = "geneticAlgorithm_con%s_rep%s"
 plotDir = "plots"
 CSVDir = "parameterDataCSVs"
 baseSavename = "optimal%s_bit%s_con%s.npy"
@@ -55,19 +64,29 @@ UBBoth =                     5
 inputFunction =              himmelblau2
 optimisation =               "min"
 convergenceTypes =           ["runCount", "userDefined"]
+fontsz=20
 
 # Parameters we can play with a little
 convergenceConditionsBoth =  [[100], [0.1/100, 10]]
 populationSize =             1000
 
 # Often changing parameters for debugging, or changing run mode
-printRunIndex =              True
+printRunIndex =              False
 printingFull =               False
-calculating = True
+show = False
+save = True
+titling = False
+calculating = False
+plotting = False
+saveOutput = True
+
+if saveOutput:
+    orig_stdout = sys.stdout
+    f = open('printout.txt', 'w')
+    sys.stdout = f
 
 # Loop to repeat the GA repeats times
 for j in range(repeats):
-
     # Loop to do each bit-length
     for bitLength in bitLengths:
 
@@ -88,11 +107,10 @@ for j in range(repeats):
         for convergenceTypeIndex in range(len(convergenceTypes)):
             # define the convergence type and print a statement saying what type of run is being done
             convergenceType = convergenceTypes[convergenceTypeIndex]
-            print("Repeat Number = %s ; Running bitLength = %s ; convergenceType = %s\n" % (j, bitLength, convergenceType))
-
+            # Define directory for data to be placed
+            dataDir = dataDirBase % j
             # Only actually perform the GA if calculating is true, otherwise load from file
             if calculating:
-
                 # Define convergence conditions and run the GA
                 convergenceConditions = convergenceConditionsBoth[convergenceTypeIndex]
                 optimalChromosomeHistory = doGeneticAlgorithm(parameterData, inputFunction, optimisation=optimisation,
@@ -103,7 +121,6 @@ for j in range(repeats):
 
                 # Define lists of useful data, and save to file for later loading
                 optimalChromosomes, optimalParameterDatas, optimalFitnesses = optimalChromosomeHistory
-                dataDir = dataDirBase %j
                 saveData(optimalChromosomeHistory, bitLength, convergenceTypeIndex, baseSavename=baseSavename, dataDir=dataDir,
                          parameterDataDir=parameterDataDir, parameterDataBaseSavename=parameterDataBaseSavename)
 
@@ -112,17 +129,59 @@ for j in range(repeats):
                 optimalChromosomes, optimalFitnesses = loadData(bitLength, convergenceTypeIndex,
                                                                       baseSavename=baseSavename, dataDir=dataDir)
 
-            # TODO:Do some plotting
+            # Plotting of results
             runIndices = range(len(optimalFitnesses))
-            print(runIndices)
-            print(optimalFitnesses)
+            optimalValues = 1/optimalFitnesses
 
-            # plt.figure()
-            # plt.plot(runIndices, optimalFitnesses)
-            # plt.show()
+            # Defines which figure to plot to based on convergence type and repeat run
+            if convergenceTypeIndex == 0:
+                if j == 0:
+                    figNumber = 1
+                elif j == 1:
+                    figNumber = 2
+                elif j ==2:
+                    figNumber = 3
+            elif convergenceTypeIndex == 1:
+                if j == 0:
+                    figNumber = 4
+                elif j == 1:
+                    figNumber = 5
+                elif j ==2:
+                    figNumber = 6
+            else: print("IT BROKE")
 
-            # print("PROPER : %s\n" %optimalChromosomes)
-            # print("NEW    : %s\n" %optimalChromosomesNew)
+            # Actually does the plotting
+            if plotting:
+                plt.figure(figNumber)
+                plt.plot(runIndices, optimalValues)
+                plt.minorticks_on()
+                plt.grid(which='both')
+                plt.xlabel("Generation")
+                plt.ylabel("Himmelblau Function Evaluation")
 
-# print("REGULAR : \n%s" %optimalParameterDatas[-1])
-# print("LOADED : \n%s" %pd.read_csv("output_filename.csv"))
+                legendBase = "bitLength = %s"
+                plt.legend([legendBase %5, legendBase %7, legendBase %9], prop={'size': fontsz})
+
+                ax = plt.gca()
+                for item in ([ax.title, ax.xaxis.label, ax.yaxis.label, ax.yaxis.get_offset_text()] +
+                             ax.get_xticklabels() + ax.get_yticklabels()):
+                    item.set_fontsize(fontsz)
+
+                saveName = plotSavenameBase %(convergenceTypeIndex, j)
+                if titling: plt.title(saveName)
+                if save: plt.savefig(os.path.join(plotDir, saveName  + '.pdf'),bbox_inches="tight")
+
+            finalOptimalValue = optimalValues[-1]
+            finalOptimalParameterData = add_xns(parameterData, optimalChromosomes[-1])
+            finalOptimalxns = list(finalOptimalParameterData.loc[:]["xn"])
+
+            print("\n===========================================================================")
+            print("Repeat Number = %s ; Running bitLength = %s ; convergenceType = %s" % (
+            j, bitLength, convergenceType))
+            print("Final Himmelblau evaluation: %s" %finalOptimalValue)
+            print("With parameters : \nx1 = %s \nx2 = %s" %(finalOptimalxns[0], finalOptimalxns[1]))
+if show: plt.show()
+# Save printed terminal output to file
+if saveOutput:
+    sys.stdout = orig_stdout
+    f.close()

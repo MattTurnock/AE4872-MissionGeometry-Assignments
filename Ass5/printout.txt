@@ -1,0 +1,144 @@
+Method is: load from file 
+
+
+===========================================================================
+Repeat Number = 0 ; Running bitLength = 5 ; convergenceType = runCount
+Final Himmelblau evaluation: 0.14262805068861448
+With parameters : 
+x1 = 3.064516129032258 
+x2 = 1.935483870967742
+
+===========================================================================
+Repeat Number = 0 ; Running bitLength = 5 ; convergenceType = userDefined
+Final Himmelblau evaluation: 0.14262805068861448
+With parameters : 
+x1 = 3.064516129032258 
+x2 = 1.935483870967742
+Method is: load from file 
+
+
+===========================================================================
+Repeat Number = 0 ; Running bitLength = 7 ; convergenceType = runCount
+Final Himmelblau evaluation: 0.002106059144228148
+With parameters : 
+x1 = 2.9921259842519685 
+x2 = 2.0078740157480315
+
+===========================================================================
+Repeat Number = 0 ; Running bitLength = 7 ; convergenceType = userDefined
+Final Himmelblau evaluation: 0.03385501221991337
+With parameters : 
+x1 = 3.031496062992126 
+x2 = 1.968503937007874
+Method is: load from file 
+
+
+===========================================================================
+Repeat Number = 0 ; Running bitLength = 9 ; convergenceType = runCount
+Final Himmelblau evaluation: 0.0011710634920535231
+With parameters : 
+x1 = 2.99412915851272 
+x2 = 2.0058708414872797
+
+===========================================================================
+Repeat Number = 0 ; Running bitLength = 9 ; convergenceType = userDefined
+Final Himmelblau evaluation: 0.0019918875124810336
+With parameters : 
+x1 = 2.99412915851272 
+x2 = 1.9960861056751467
+Method is: load from file 
+
+
+===========================================================================
+Repeat Number = 1 ; Running bitLength = 5 ; convergenceType = runCount
+Final Himmelblau evaluation: 0.14262805068861448
+With parameters : 
+x1 = 3.064516129032258 
+x2 = 1.935483870967742
+
+===========================================================================
+Repeat Number = 1 ; Running bitLength = 5 ; convergenceType = userDefined
+Final Himmelblau evaluation: 0.14262805068861448
+With parameters : 
+x1 = 3.064516129032258 
+x2 = 1.935483870967742
+Method is: load from file 
+
+
+===========================================================================
+Repeat Number = 1 ; Running bitLength = 7 ; convergenceType = runCount
+Final Himmelblau evaluation: 0.002106059144228148
+With parameters : 
+x1 = 2.9921259842519685 
+x2 = 2.0078740157480315
+
+===========================================================================
+Repeat Number = 1 ; Running bitLength = 7 ; convergenceType = userDefined
+Final Himmelblau evaluation: 0.023843697014692557
+With parameters : 
+x1 = 2.9921259842519685 
+x2 = 1.968503937007874
+Method is: load from file 
+
+
+===========================================================================
+Repeat Number = 1 ; Running bitLength = 9 ; convergenceType = runCount
+Final Himmelblau evaluation: 0.003630224814523417
+With parameters : 
+x1 = 2.99412915851272 
+x2 = 2.015655577299413
+
+===========================================================================
+Repeat Number = 1 ; Running bitLength = 9 ; convergenceType = userDefined
+Final Himmelblau evaluation: 0.017289510089810386
+With parameters : 
+x1 = 3.023483365949119 
+x2 = 1.9863013698630136
+Method is: load from file 
+
+
+===========================================================================
+Repeat Number = 2 ; Running bitLength = 5 ; convergenceType = runCount
+Final Himmelblau evaluation: 0.14262805068861448
+With parameters : 
+x1 = 3.064516129032258 
+x2 = 1.935483870967742
+
+===========================================================================
+Repeat Number = 2 ; Running bitLength = 5 ; convergenceType = userDefined
+Final Himmelblau evaluation: 0.14262805068861448
+With parameters : 
+x1 = 3.064516129032258 
+x2 = 1.935483870967742
+Method is: load from file 
+
+
+===========================================================================
+Repeat Number = 2 ; Running bitLength = 7 ; convergenceType = runCount
+Final Himmelblau evaluation: 0.002106059144228148
+With parameters : 
+x1 = 2.9921259842519685 
+x2 = 2.0078740157480315
+
+===========================================================================
+Repeat Number = 2 ; Running bitLength = 7 ; convergenceType = userDefined
+Final Himmelblau evaluation: 0.10586702802768838
+With parameters : 
+x1 = 3.031496062992126 
+x2 = 2.047244094488189
+Method is: load from file 
+
+
+===========================================================================
+Repeat Number = 2 ; Running bitLength = 9 ; convergenceType = runCount
+Final Himmelblau evaluation: 0.0011710634920535231
+With parameters : 
+x1 = 2.99412915851272 
+x2 = 2.0058708414872797
+
+===========================================================================
+Repeat Number = 2 ; Running bitLength = 9 ; convergenceType = userDefined
+Final Himmelblau evaluation: 0.025618407173808574
+With parameters : 
+x1 = 2.984344422700587 
+x2 = 1.9765166340508804

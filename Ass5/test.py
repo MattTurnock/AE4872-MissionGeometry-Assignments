@@ -12,4 +12,4 @@ from Ass4.optim1_utils import himmelblau
 import numpy as np
 import random
 
-print(random.random())
+print(himmelblau(3.064516129, 1.935483871))
