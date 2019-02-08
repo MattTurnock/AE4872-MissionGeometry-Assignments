@@ -1,4 +1,11 @@
-#Define a number of generic mathematical utilities
+#!/usr/bin/env python
+
+"""test.py: Define a number of generic mathematical utilities"""
+__author__      = "Matthew Turnock"
+__email__ = "matthew.turnock1@gmail.com"
+__version__ = "1.1"
+
+#######################################################################################################################
 
 import numpy as np
 import itertools
