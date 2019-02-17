@@ -66,6 +66,11 @@ def get_orbital_velocity(mu, orbital_radius, SMA):
 def get_circular_velocity(mu, orbital_radius):
     return np.sqrt(mu/orbital_radius)
 
+def get_circular_velocity_units(mu, orbital_radius, units=u.km/u.s):
+    Vc = get_circular_velocity(mu, orbital_radius)
+    Vc.to(units)
+    return Vc
+
 def get_escape_velocity(mu, orbital_radius):
     return np.sqrt(2*mu/orbital_radius)
 

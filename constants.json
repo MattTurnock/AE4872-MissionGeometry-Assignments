@@ -12,6 +12,11 @@
     "val": 360,
     "descr": "rotation rate of Earth"
   },
+  "Ve": {
+    "unit": "m/s",
+    "val": 464.0,
+    "descr": "rotation speed of the Earth at the equator"
+  },
   "iDelfi": {
     "unit": "deg",
     "val": 98.0
