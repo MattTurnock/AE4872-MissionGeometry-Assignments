@@ -1,0 +1,180 @@
+Method is: load from file 
+
+
+===========================================================================
+Repeat Number = 0 ; Running bitLength = 5 ; convergenceType = runCount
+Number of generations: 101
+Computation time: 320.3235638141632 s
+Final Himmelblau evaluation: 0.14262805068861448
+With parameters : 
+x1 = 3.064516129032258 
+x2 = 1.935483870967742
+
+===========================================================================
+Repeat Number = 0 ; Running bitLength = 5 ; convergenceType = userDefinedAverage
+Number of generations: 396
+Computation time: 1047.7323751449585 s
+Final Himmelblau evaluation: 0.14262805068861448
+With parameters : 
+x1 = 3.064516129032258 
+x2 = 1.935483870967742
+Method is: load from file 
+
+
+===========================================================================
+Repeat Number = 0 ; Running bitLength = 7 ; convergenceType = runCount
+Number of generations: 101
+Computation time: 288.0596513748169 s
+Final Himmelblau evaluation: 0.002106059144228148
+With parameters : 
+x1 = 2.9921259842519685 
+x2 = 2.0078740157480315
+
+===========================================================================
+Repeat Number = 0 ; Running bitLength = 7 ; convergenceType = userDefinedAverage
+Number of generations: 195
+Computation time: 474.156307220459 s
+Final Himmelblau evaluation: 0.002106059144228148
+With parameters : 
+x1 = 2.9921259842519685 
+x2 = 2.0078740157480315
+Method is: load from file 
+
+
+===========================================================================
+Repeat Number = 0 ; Running bitLength = 9 ; convergenceType = runCount
+Number of generations: 101
+Computation time: 222.72349286079407 s
+Final Himmelblau evaluation: 0.008318073018409923
+With parameters : 
+x1 = 2.984344422700587 
+x2 = 2.015655577299413
+
+===========================================================================
+Repeat Number = 0 ; Running bitLength = 9 ; convergenceType = userDefinedAverage
+Number of generations: 242
+Computation time: 521.1945753097534 s
+Final Himmelblau evaluation: 0.0026658186540409177
+With parameters : 
+x1 = 3.003913894324853 
+x2 = 1.9863013698630136
+Method is: load from file 
+
+
+===========================================================================
+Repeat Number = 1 ; Running bitLength = 5 ; convergenceType = runCount
+Number of generations: 101
+Computation time: 217.83145332336426 s
+Final Himmelblau evaluation: 0.14262805068861448
+With parameters : 
+x1 = 3.064516129032258 
+x2 = 1.935483870967742
+
+===========================================================================
+Repeat Number = 1 ; Running bitLength = 5 ; convergenceType = userDefinedAverage
+Number of generations: 690
+Computation time: 1490.5191633701324 s
+Final Himmelblau evaluation: 0.14262805068861448
+With parameters : 
+x1 = 3.064516129032258 
+x2 = 1.935483870967742
+Method is: load from file 
+
+
+===========================================================================
+Repeat Number = 1 ; Running bitLength = 7 ; convergenceType = runCount
+Number of generations: 101
+Computation time: 218.40365743637085 s
+Final Himmelblau evaluation: 0.002106059144228148
+With parameters : 
+x1 = 2.9921259842519685 
+x2 = 2.0078740157480315
+
+===========================================================================
+Repeat Number = 1 ; Running bitLength = 7 ; convergenceType = userDefinedAverage
+Number of generations: 1048
+Computation time: 1954.4341933727264 s
+Final Himmelblau evaluation: 0.002106059144228148
+With parameters : 
+x1 = 2.9921259842519685 
+x2 = 2.0078740157480315
+Method is: load from file 
+
+
+===========================================================================
+Repeat Number = 1 ; Running bitLength = 9 ; convergenceType = runCount
+Number of generations: 101
+Computation time: 186.69541788101196 s
+Final Himmelblau evaluation: 0.00800454133036824
+With parameters : 
+x1 = 3.003913894324853 
+x2 = 1.9765166340508804
+
+===========================================================================
+Repeat Number = 1 ; Running bitLength = 9 ; convergenceType = userDefinedAverage
+Number of generations: 165
+Computation time: 305.2206826210022 s
+Final Himmelblau evaluation: 0.0016150687069201798
+With parameters : 
+x1 = 3.003913894324853 
+x2 = 2.0058708414872797
+Method is: load from file 
+
+
+===========================================================================
+Repeat Number = 2 ; Running bitLength = 5 ; convergenceType = runCount
+Number of generations: 101
+Computation time: 184.23736000061035 s
+Final Himmelblau evaluation: 0.14262805068861448
+With parameters : 
+x1 = 3.064516129032258 
+x2 = 1.935483870967742
+
+===========================================================================
+Repeat Number = 2 ; Running bitLength = 5 ; convergenceType = userDefinedAverage
+Number of generations: 291
+Computation time: 533.4620530605316 s
+Final Himmelblau evaluation: 0.14262805068861448
+With parameters : 
+x1 = 3.064516129032258 
+x2 = 1.935483870967742
+Method is: load from file 
+
+
+===========================================================================
+Repeat Number = 2 ; Running bitLength = 7 ; convergenceType = runCount
+Number of generations: 101
+Computation time: 185.44906497001648 s
+Final Himmelblau evaluation: 0.002106059144228148
+With parameters : 
+x1 = 2.9921259842519685 
+x2 = 2.0078740157480315
+
+===========================================================================
+Repeat Number = 2 ; Running bitLength = 7 ; convergenceType = userDefinedAverage
+Number of generations: 1775
+Computation time: 3274.608175754547 s
+Final Himmelblau evaluation: 0.002106059144228148
+With parameters : 
+x1 = 2.9921259842519685 
+x2 = 2.0078740157480315
+Method is: load from file 
+
+
+===========================================================================
+Repeat Number = 2 ; Running bitLength = 9 ; convergenceType = runCount
+Number of generations: 101
+Computation time: 186.73396182060242 s
+Final Himmelblau evaluation: 0.008318073018409923
+With parameters : 
+x1 = 2.984344422700587 
+x2 = 2.015655577299413
+
+===========================================================================
+Repeat Number = 2 ; Running bitLength = 9 ; convergenceType = userDefinedAverage
+Number of generations: 406
+Computation time: 750.2410504817963 s
+Final Himmelblau evaluation: 0.0005210716290828919
+With parameters : 
+x1 = 3.003913894324853 
+x2 = 1.9960861056751467

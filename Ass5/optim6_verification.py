@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
-"""test.py: Runs verification for the Himmelblau GA, by comparing against "theoretical" minimum
-for the OPTIM-6 assignment"""
+"""
+optim6_verification.py: Runs verification for the Himmelblau GA, by comparing against "theoretical" minimum
+for the OPTIM-6 assignment
+"""
 __author__      = "Matthew Turnock"
 __email__ = "matthew.turnock1@gmail.com"
 __version__ = "1.0"
@@ -11,7 +13,9 @@ import numpy as np
 from Ass5.runGACases import bitLengths, UBBoth, LBBoth
 from Ass5.optim6_utils import himmelblau2
 from Ass1.misc_utils import list_perms
+from time import time
 
+t0 = time()
 # Use given grid sizes and initialise a grids list
 gridSizes = [32, 128, 512]
 grids = []
@@ -33,4 +37,5 @@ for i in range(len(grids)):
             minimum = evaluation
             optimalPair = permutation
 
-    print("For bitLength: %s \nEvaluation = %s \nxns = %s\n" %(bitLengths[i], minimum, optimalPair) )
+    compTime = time() - t0
+    print("For bitLength: %s \nEvaluation = %s \nxns = %s\nNumber of evaluations = %s\nComputation time = %s s\n" %(bitLengths[i], minimum, optimalPair, len(permutations), compTime) )

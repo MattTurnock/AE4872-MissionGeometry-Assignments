@@ -1,9 +1,14 @@
 #!/usr/bin/env python
 
-"""test.py: Some utility functions for the OPTIM-6 assignment"""
+"""
+optim6_utils.py: Some utility functions for the OPTIM-6 assignment
+Changelist:
+1.1: Added convergence functionality such that the average result from the generation is used for convergence, instead
+of the optimum
+"""
 __author__      = "Matthew Turnock"
 __email__ = "matthew.turnock1@gmail.com"
-__version__ = "1.0"
+__version__ = "1.1"
 
 ########################################################################################################################
 import numpy as np
@@ -235,9 +240,13 @@ def doGeneticAlgorithm(parameterData, inputFunction, optimisation="min", converg
     :param inputFunction: The input function given without parameters (eg himmelblau2)
     :param optimisation: The optimisation type for the given function. Eg we may want to minimise or maximise the input
     function
-    :param convergenceType: Currently allowed types are "runCount" and "userDefined". runCount ends after a certain
-    number of runs, userDefined implements a % based convergence condition, also with a minimum number of runs implemented
-    :param convergenceConditions: List of convergence conditions depending on convergenceType
+    :param convergenceType: Currently allowed types are "runCount", "userDefined", and "userDefinedAverage". runCount
+    ends after a certain number of runs, userDefined implements a % based convergence condition, based on most optimum
+    per generation; also with a minimum number of runs implemented. userDefinedAverage works similarly to the
+    userDefined case, but uses the average of the previous generation instead of the optimum as convergence condition.
+    :param convergenceConditions: List of convergence conditions depending on convergenceType. For "runCount" input a
+    length-1 list of how many runs to complete. For "userDefined" and "userDefinedAverage" input a length-2 list with
+    convergence threshold followed by minimum number of runs. TODO: implement "userDefinedAverage" and test
     :param printingFull: Adds more printing info, usually leave false
     :param printingRunIndex: Simply prints the runIndex to give an idea of how far through we are
     :param populationSize: Size of the population
@@ -250,6 +259,7 @@ def doGeneticAlgorithm(parameterData, inputFunction, optimisation="min", converg
     initialGenome = buildInitialGenome(parameterData, populationSize=populationSize)
     # Intialise a bunch of parameters for use in later loops
     optimalChromosomeHistory = []
+    genomeFitnessHistory = []
     genome = initialGenome
     optimalFitness = 0
     runIndex = 0
@@ -271,7 +281,7 @@ def doGeneticAlgorithm(parameterData, inputFunction, optimisation="min", converg
             # Calculate fitness with predefined function
             fitness = checkFitness(inputFunction, parameterDataNew, optimisation=optimisation)
             # Add fitness data to the fitnessData list
-            genomeFitnessData.append((chromosome, parameterDataNew, fitness))
+            genomeFitnessData.append(fitness)
 
             # Check if fitness is better than the current optimum, and update if it is
             if fitness > optimalFitness:
@@ -281,6 +291,8 @@ def doGeneticAlgorithm(parameterData, inputFunction, optimisation="min", converg
                 if printingFull:
                     print(optimalFitness)
 
+        # Add current fitness data to the history
+        genomeFitnessHistory.append(genomeFitnessData)
         # Add optimal solution to the history list
         optimalChromosomeHistory.append(optimalSolution)
         # Use predefined function to make children and mutate them
@@ -307,6 +319,7 @@ def doGeneticAlgorithm(parameterData, inputFunction, optimisation="min", converg
             if (len(optimalChromosomeHistory) < convergenceConditions[1]) or (len(optimalChromosomeHistory) < 2):
                 convergence = False
             else:
+                # Define optimum of current and previous generations
                 previousFitness = optimalChromosomeHistory[-2][2]
                 currentFitness = optimalChromosomeHistory[-1][2]
                 differenceFraction = abs((currentFitness - previousFitness) / previousFitness)
@@ -314,6 +327,25 @@ def doGeneticAlgorithm(parameterData, inputFunction, optimisation="min", converg
                     convergence = True
                 else:
                     convergence = False
+
+        elif convergenceType == "userDefinedAverage":
+            if (len(genomeFitnessHistory) < convergenceConditions[1]) or (len(genomeFitnessHistory) < 2):
+                convergence = False
+
+            else:
+                # Define average of current and previous generations
+                previousFitnessAverage = np.mean(genomeFitnessHistory[-2])
+                currentFitnessAverage = np.mean(genomeFitnessHistory[-1])
+                differenceFraction = abs((currentFitnessAverage - previousFitnessAverage) / previousFitnessAverage)
+                if differenceFraction < convergenceConditions[0]:
+                    convergence = True
+                else:
+                    convergence = False
+
+                if printRunIndex:
+                    differencePercent = differenceFraction*100
+                    print("Difference percent: %s" %differencePercent)
+
 
     optimalChromosomes = []
     optimalParameterDatas = []
