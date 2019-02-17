@@ -6,6 +6,7 @@ Using the relation:                   Nadir Angle
 Calculated impact on mapping budget = 193.0989804605758 m
 Calculated impact (rounded)         = 193.1 m
 The error is:                         OK
+
 ========================================================================
 
 STAR SENSOR MOUNTING:
@@ -15,6 +16,7 @@ Using the relation:                   Nadir Angle
 Calculated impact on mapping budget = 257.4653072807678 m
 Calculated impact (rounded)         = 257.5 m
 The error is:                         OK
+
 ========================================================================
 
 STAR CATALOG ACCURACY:
@@ -24,6 +26,7 @@ Using the relation:                   Nadir Angle
 Calculated impact on mapping budget = 12.873265364038385 m
 Calculated impact (rounded)         = 12.9 m
 The error is:                         OK
+
 ========================================================================
 
 ATTITUDE COMPUTATION:
@@ -33,6 +36,7 @@ Using the relation:                   Nadir Angle
 Calculated impact on mapping budget = 12.873265364038385 m
 Calculated impact (rounded)         = 12.9 m
 The error is:                         OK
+
 ========================================================================
 
 PAYLOAD SENSOR MEASUREMENT:
@@ -42,6 +46,7 @@ Using the relation:                   Nadir Angle
 Calculated impact on mapping budget = 128.7326536403839 m
 Calculated impact (rounded)         = 128.7 m
 The error is:                         UNACCEPTABRU
+
 ========================================================================
 
 TARGET CENTROIDING:
@@ -51,6 +56,7 @@ Using the relation:                   Nadir Angle
 Calculated impact on mapping budget = 257.4653072807678 m
 Calculated impact (rounded)         = 257.5 m
 The error is:                         OK
+
 ========================================================================
 
 PAYLOAD SENSOR MOUNTING:
@@ -60,6 +66,7 @@ Using the relation:                   Nadir Angle
 Calculated impact on mapping budget = 128.7326536403839 m
 Calculated impact (rounded)         = 128.7 m
 The error is:                         UNACCEPTABRU
+
 ========================================================================
 
 TRANSFORMATION OF TARGET LOCATION TO INERTIAL COORDINATES:
@@ -69,6 +76,7 @@ Using the relation:                   Nadir Angle
 Calculated impact on mapping budget = 12.873265364038385 m
 Calculated impact (rounded)         = 12.9 m
 The error is:                         OK
+
 ========================================================================
 
 ORBIT DETERMINATION:
@@ -78,6 +86,7 @@ Using the relation:                   Direct
 Calculated impact on mapping budget = 100.0 m
 Calculated impact (rounded)         = 100.0 m
 The error is:                         OK
+
 ========================================================================
 
 TIMING:
@@ -87,6 +96,7 @@ Using the relation:                   Timing Map Error (Basic)
 Calculated impact on mapping budget = 367.5069560170016 m
 Calculated impact (rounded)         = 367.5 m
 The error is:                         OK
+
 ========================================================================
 
 PROJECTION ERROR DUE TO ALTITUDE:
@@ -96,6 +106,7 @@ Using the relation:                   Direct
 Calculated impact on mapping budget = 700.0 m
 Calculated impact (rounded)         = 700.0 m
 The error is:                         OK
+
 ========================================================================
 
 SUBSATELLITE POINT:
@@ -105,8 +116,9 @@ Using the relation:                   Direct
 Calculated impact on mapping budget = 450.0 m
 Calculated impact (rounded)         = 450.0 m
 The error is:                         OK
+
 ========================================================================
 
-Nadir RSS Calculations:
+NADIR RSS CALCULATIONS:
 Nadir RSS based on (my) calculated values = 590.395378532171 m 
 Nadir RSS based on given values           = 590.4527669509222 m

@@ -35,7 +35,7 @@ basePrint = "Error                               = %s \n" \
             "Using the relation:                   %s \n" \
             "Calculated impact on mapping budget = %s\n" \
             "Calculated impact (rounded)         = %s\n" \
-            "The error is:                         %s\n" \
+            "The error is:                         %s\n\n" \
             "========================================================================"
 
 
@@ -171,7 +171,7 @@ nadirRSSCalc = doRSS(nadirErrorInfo[:, -1])
 nadirRSS = doRSS(nadirErrorInfo[:, 1])
 
 
-print("\nNadir RSS Calculations:")
+print("\nNADIR RSS CALCULATIONS:")
 print("Nadir RSS based on (my) calculated values = %s \n"
       "Nadir RSS based on given values           = %s" %(nadirRSSCalc, nadirRSS))
 
