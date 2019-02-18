@@ -3,6 +3,11 @@
 """
 part1.py: Script to perform part 1 of the DESIGN-7 assignment
 """
+__author__      = "Matthew Turnock"
+__email__ = "matthew.turnock@protonmail.com"
+__version__ = "1.0"
+
+########################################################################################################################
 from json_to_dict import constants
 import numpy as np
 from astropy import units as u
@@ -11,7 +16,8 @@ import sys
 
 pi=np.pi
 
-saveOutput = True
+saveOutput = False
+printing = True
 
 if saveOutput:
     orig_stdout = sys.stdout
@@ -41,39 +47,6 @@ basePrint = "Error                               = %s \n" \
 
 ##################################
 
-def mapErrorPrintout(problemParametersError, problemParametersMappingError, name="", errorFunction=nadMapError,
-                     errorFunctionInputs=[], errorFunctionName="", decimals=1, basePrint="%s %s %s %s %s %s"):
-    """
-    Function to printout map errors TODO: finish this description and parameters description
-    :param problemParametersError:
-    :param problemParametersMappingError:
-    :param name:
-    :param errorFunction:
-    :param errorFunctionInputs:
-    :param errorFunctionName:
-    :param decimals:
-    :param basePrint:
-    :return:
-    """
-    print("\n%s" %name)
-    if errorFunction == None:
-        errorMappingCalc = problemParametersError
-    else:
-        errorMappingCalc = errorFunction(errorFunctionInputs)
-
-    errorMappingCalcRound = np.around(errorMappingCalc, decimals=decimals)
-    if errorMappingCalcRound != problemParametersMappingError:
-        outcome = "UNACCEPTABRU"
-    else:
-        outcome = "OK"
-    print(basePrint % (problemParametersError,
-                       problemParametersMappingError,
-                       errorFunctionName,
-                       errorMappingCalc,
-                       errorMappingCalcRound,
-                       outcome))
-
-    return errorMappingCalc
 
 # List of things to loop through when printing mcgubbins
 toLoop = [[problemParameters.starSensorMeasurement,
@@ -151,7 +124,7 @@ for i in range(len(toLoop)):
                      errorFunctionInputs=errorFunctionInputs,
                      errorFunctionName=errorFunctionName,
                      decimals=decimals,
-                     basePrint=basePrint)
+                     basePrint=basePrint, printing=printing)
 
     toLoop[i].append(errorMappingCalc)
 
@@ -165,13 +138,25 @@ for i in range(len(errorInfo)):
     if (errorFunction == nadMapError2) or (name == "ORBIT DETERMINATION:") or (name == "TIMING:"):
         nadirErrorInfo.append(toLoop[i])
 
-nadirErrorInfo = np.array(nadirErrorInfo)
+nadirErrorRandom = np.array(nadirErrorInfo)
 
-nadirRSSCalc = doRSS(nadirErrorInfo[:, -1])
-nadirRSS = doRSS(nadirErrorInfo[:, 1])
+nadirRSSRandomCalc = doRSS(nadirErrorRandom[:, -1])
+nadirRSSRandom = doRSS(nadirErrorRandom[:, 1])
 
 
-print("\nNADIR RSS CALCULATIONS:")
-print("Nadir RSS based on (my) calculated values = %s \n"
-      "Nadir RSS based on given values           = %s" %(nadirRSSCalc, nadirRSS))
+
+if printing:
+    print("\nNADIR RSS CALCULATIONS:")
+    print("Nadir RSS based on (my) calculated values for random     = %s \n"
+          "Nadir RSS based on given values for random               = %s" %(nadirRSSRandomCalc, nadirRSSRandom))
+
+nadirErrorRandomToSave = np.copy(nadirErrorRandom)
+
+for i in range(len(nadirErrorRandomToSave)):
+    errorFunction = nadirErrorRandom[i, -2]
+    if errorFunction != None:
+        errorFunctionName = errorFunction.__name__
+    nadirErrorRandomToSave[i, -2] = errorFunctionName
+
+npArray2LatexTable(nadirErrorRandomToSave, "nadirRandomErrors.txt")
 

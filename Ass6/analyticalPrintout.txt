@@ -122,3 +122,4 @@ The error is:                         OK
 NADIR RSS CALCULATIONS:
 Nadir RSS based on (my) calculated values = 590.395378532171 m 
 Nadir RSS based on given values           = 590.4527669509222 m
+weeny

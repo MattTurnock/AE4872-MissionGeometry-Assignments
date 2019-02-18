@@ -120,7 +120,45 @@ def doRSS(errorArray):
 
     return RSS
 
+def mapErrorPrintout(problemParametersError, problemParametersMappingError, name="", errorFunction=nadMapError,
+                     errorFunctionInputs=[], errorFunctionName="", decimals=1, basePrint="%s %s %s %s %s %s",
+                     printing=True):
+    """
+    Function to printout map errors TODO: finish this description and parameters description
+    :param problemParametersError:
+    :param problemParametersMappingError:
+    :param name:
+    :param errorFunction:
+    :param errorFunctionInputs:
+    :param errorFunctionName:
+    :param decimals:
+    :param basePrint:
+    :return:
+    """
+    if printing: print("\n%s" %name)
+    if errorFunction == None:
+        errorMappingCalc = problemParametersError
+    else:
+        errorMappingCalc = errorFunction(errorFunctionInputs)
 
+    errorMappingCalcRound = np.around(errorMappingCalc, decimals=decimals)
+    if errorMappingCalcRound != problemParametersMappingError:
+        outcome = "UNACCEPTABRU"
+    else:
+        outcome = "OK"
+    if printing:
+        print(basePrint % (problemParametersError,
+                           problemParametersMappingError,
+                           errorFunctionName,
+                           errorMappingCalc,
+                           errorMappingCalcRound,
+                           outcome))
+
+    return errorMappingCalc
+
+
+def npArray2LatexTable(array, savename):
+    np.savetxt(savename, array, fmt="%s", delimiter="\t&\t", newline="      // \n")
 
 
 class ProblemParameters:
@@ -149,6 +187,8 @@ class ProblemParameters:
     timing                   = 50*u.ms
     projection               = 700*u.m
     subsatellitePoint        = 450*u.m
+
+    payloadSensorMountingSystematic = 0.005*u.deg
 
     # Individual effects of mapping (known)
     starSensorMeasurementMapping    = 193.1*u.m
