@@ -8,12 +8,8 @@ __email__ = "matthew.turnock@protonmail.com"
 __version__ = "1.0"
 
 ########################################################################################################################
-from json_to_dict import constants
-import numpy as np
-from astropy import units as u
 from Ass6.design7_utils import *
 import sys
-
 pi=np.pi
 
 saveOutput = False
@@ -46,10 +42,6 @@ basePrint = "Error                               = %s \n" \
             "Calculated impact (rounded)         = %s\n" \
             "The error is:                         %s\n\n" \
             "========================================================================"
-
-
-##################################
-
 
 # List of things to loop through when printing mcgubbins
 toLoop = [[problemParameters.starSensorMeasurement,

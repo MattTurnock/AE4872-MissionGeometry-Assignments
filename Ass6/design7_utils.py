@@ -3,13 +3,58 @@
 """
 design7_utils.py: A bunch of useful functions for the DESIGN-7 assignment
 """
-
 from json_to_dict import constants
 import numpy as np
 from astropy import units as u
 from Ass1.kep_orbit_utils import get_circular_velocity_units
-
 pi=np.pi
+
+class ProblemParameters:
+    """
+    Class that contains all parameters for the problem (errors, altitudes etc)
+    """
+    # General parameters
+    def __init__(self, h=1000*u.km, epsilon=21.6052*u.deg, lat=0*u.deg, Xssp=0*u.m):
+        self.h = h
+        self.epsilon = epsilon
+        self.eta = 90*u.deg - epsilon
+        self.D0 = (h/np.sin(epsilon)).to(u.km)
+        self.lat = lat
+        self.mu = constants["muEarth"]
+        self.Re = constants["RE"]
+        self.Rs = self.Re + self.h
+        self.Vsc = get_circular_velocity_units(self.mu, self.Rs, units=u.m/u.s)
+        self.Xtarg_nom = Xssp + self.h * np.tan(self.eta)
+
+    # Individual errors
+    starSensorMeasurement    = 0.0015*u.deg
+    starSensorMounting       = 0.0020*u.deg
+    starCatalog              = 0.0001*u.deg
+    attitudeComp             = 0.0001*u.deg
+    payloadSensorMeasurement = 0.0010*u.deg
+    targetCentroiding        = 0.0020*u.deg
+    payloadSensorMounting    = 0.0010*u.deg
+    coordTransformation      = 0.0001*u.deg
+    orbitDetermination       = 100*u.m
+    timing                   = 50*u.ms
+    projection               = 700*u.m
+    subsatellitePoint        = 450*u.m
+
+    payloadSensorMountingSystematic = 0.005*u.deg
+
+    # Individual effects of mapping (known)
+    starSensorMeasurementMapping    = 193.1*u.m
+    starSensorMountingMapping       = 257.5*u.m
+    starCatalogMapping              = 12.9*u.m
+    attitudeCompMapping             = 12.9*u.m
+    payloadSensorMeasurementMapping = 128.8*u.m
+    targetCentroidingMapping        = 257.5*u.m
+    payloadSensorMountingMapping    = 128.8*u.m
+    coordTransformationMapping      = 12.9*u.m
+    orbitDeterminationMapping       = 100.0*u.m
+    timingMapping                   = 367.5*u.m
+    projectionMapping               = 700.0*u.m
+    subsatellitePointMapping        = 450.0*u.m
 
 def azMapError(dphi, D, eta, units=None):
     """
@@ -41,7 +86,7 @@ def nadMapError(deta, D, epsilon, units=None):
     :param deta: Error in nadir angle eta
     :param D: Nominal distance from spacecraft to satellite
     :param epsilon: Nominal observation angle epsilon
-    :param units:The units to output as. Will give regular number if None. Angles must be radians and distances must be
+    :param units: The units to output as. Will give regular number if None. Angles must be radians and distances must be
     km in that case, output is in km
     :return error: The mapping error (in km, or whatever is given)
     """
@@ -69,6 +114,14 @@ def nadMapError2(paramList):
     return error
 
 def clockMapError(dT, lat, Ve=464.0, units=None):
+    """
+    Function to plotting clock mapping error, based on equation in OCDM
+    :param dT: Timing error
+    :param lat: Latitude
+    :param Ve: Earth rotation velocity at equator
+    :param units: The units to output as. Will give regular number if None.
+    :return error: Mapping error
+    """
     # Calculate error
     error = dT * Ve * np.cos(lat)
 
@@ -124,16 +177,19 @@ def mapErrorPrintout(problemParametersError, problemParametersMappingError, name
                      errorFunctionInputs=[], errorFunctionName="", decimals=1, basePrint="%s %s %s %s %s %s",
                      printing=True):
     """
-    Function to printout map errors TODO: finish this description and parameters description
-    :param problemParametersError:
-    :param problemParametersMappingError:
-    :param name:
-    :param errorFunction:
-    :param errorFunctionInputs:
-    :param errorFunctionName:
-    :param decimals:
-    :param basePrint:
-    :return:
+
+    Function to return an array of mapping errors for a given parameter, and print if necessary
+    :param problemParametersError: The representative error given in ProblemParameters class
+    :param problemParametersMappingError: The mapping error given in ProblemParameters class that has been calculated
+    by OCDM
+    :param name: Name given to the parameter
+    :param errorFunction: The error function that is to be uesed to analytically calculate error
+    :param errorFunctionInputs: List of inputs to pass to the errorFunction
+    :param errorFunctionName: String name for the error function, more descriptive
+    :param decimals: Number of decimals to round to
+    :param basePrint: Just a string to print into
+    :param printing: Boolean of if printing should happen
+    :return errorMappingCalc: The value of the mapping error based on representative value
     """
     if printing: print("\n%s" %name)
     if errorFunction == None:
@@ -158,65 +214,40 @@ def mapErrorPrintout(problemParametersError, problemParametersMappingError, name
 
 
 def npArray2LatexTable(array, savename):
+    """
+    Simple function to convert numpy array to a latex table component
+    :param array: Array to convert
+    :param savename: Name to give to generated txt file
+    :return None:
+    """
     np.savetxt(savename, array, fmt="%s", delimiter="\t&\t", newline="      // \n")
 
 
-class ProblemParameters:
-
-    # General parameters
-    def __init__(self, h=1000*u.km, epsilon=21.6052*u.deg, lat=0*u.deg, Xssp=0*u.m):
-        self.h = h
-        self.epsilon = epsilon
-        self.eta = 90*u.deg - epsilon
-        self.D0 = (h/np.sin(epsilon)).to(u.km)
-        self.lat = lat
-        self.mu = constants["muEarth"]
-        self.Re = constants["RE"]
-        self.Rs = self.Re + self.h
-        self.Vsc = get_circular_velocity_units(self.mu, self.Rs, units=u.m/u.s)
-        self.Xtarg_nom = Xssp + self.h * np.tan(self.eta)
-
-    # Individual errors
-    starSensorMeasurement    = 0.0015*u.deg
-    starSensorMounting       = 0.0020*u.deg
-    starCatalog              = 0.0001*u.deg
-    attitudeComp             = 0.0001*u.deg
-    payloadSensorMeasurement = 0.0010*u.deg
-    targetCentroiding        = 0.0020*u.deg
-    payloadSensorMounting    = 0.0010*u.deg
-    coordTransformation      = 0.0001*u.deg
-    orbitDetermination       = 100*u.m
-    timing                   = 50*u.ms
-    projection               = 700*u.m
-    subsatellitePoint        = 450*u.m
-
-    payloadSensorMountingSystematic = 0.005*u.deg
-
-    # Individual effects of mapping (known)
-    starSensorMeasurementMapping    = 193.1*u.m
-    starSensorMountingMapping       = 257.5*u.m
-    starCatalogMapping              = 12.9*u.m
-    attitudeCompMapping             = 12.9*u.m
-    payloadSensorMeasurementMapping = 128.8*u.m
-    targetCentroidingMapping        = 257.5*u.m
-    payloadSensorMountingMapping    = 128.8*u.m
-    coordTransformationMapping      = 12.9*u.m
-    orbitDeterminationMapping       = 100.0*u.m
-    timingMapping                   = 367.5*u.m
-    projectionMapping               = 700.0*u.m
-    subsatellitePointMapping        = 450.0*u.m
 
 
 
-def doMonteCarlo(iterations, randIndices, randSigmas, Xtarg_nom=0, Vsc=0, eta=0, h=0, systIndices=np.array([]), systValues=np.array([])):
-    # TODO: add neat documentation
+def doMonteCarlo(iterations, randIndices, randSigmas, Xtarg_nom=0, Vsc=0, eta=0, h=0, systIndices=np.array([]),
+                 systValues=np.array([])):
+    """
+    Function to fully do the Monte-Carlo analysis
+    :param iterations: Number of Monte-Carlo iterations to perform
+    :param randIndices: np array containing indices in monteArray of random errors
+    :param randSigmas: Values to place at locations defined by randIndices
+    :param Xtarg_nom: Nominal value of the target X coordinate
+    :param Vsc: Spacecraft velocity
+    :param eta: observation angle
+    :param h: Spacecraftv altitude
+    :param systIndices: np array containing indices in monteArray of systematic errors
+    :param systValues: Values to place at locations defined by systIndices
+    :return monteArray: An array containing all Monte-Carlo pertinent info
+    """
+    # Array length specific to this problem
     arrayLength = 27
 
-
+    # Create base array to be filled
     monteArray = np.zeros((iterations, arrayLength), dtype=object)
 
-    # Plonk random numbers into the random slots and the systematic ones
-
+    # Plonk random numbers into the proper random slots and the systematic ones
     for i in range(len(monteArray)):
         row = monteArray[i]
         for j in range(len(randIndices)):
@@ -264,9 +295,5 @@ def doMonteCarlo(iterations, randIndices, randSigmas, Xtarg_nom=0, Vsc=0, eta=0,
 
     monteArray[:, 25] = Xtargs
     monteArray[:, 26] = dXtargs
-
-
-    dXtargs = monteArray[:, 26]
-
 
     return monteArray
