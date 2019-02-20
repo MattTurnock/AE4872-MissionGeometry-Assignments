@@ -16,7 +16,7 @@ import sys
 
 pi=np.pi
 
-saveOutput = True
+saveOutput = False
 printing = True
 
 if saveOutput:

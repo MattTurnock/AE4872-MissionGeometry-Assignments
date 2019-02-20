@@ -10,6 +10,7 @@ __version__ = "1.0"
 ########################################################################################################################
 
 import numpy as np
+import math
 from Ass6.design7_utils import *
 from Ass6.part1 import *
 from Ass6.part2 import *
@@ -17,10 +18,11 @@ from matplotlib import pyplot as plt
 
 # np.random.seed(12)
 
-iterations = 100000
+iterations = 10000
 calculating = False
 fullLoad = False
 finalLoad = True
+show = False
 
 monteCarloResults = np.zeros((2,2), dtype=object)
 # monteCarloResults
@@ -115,10 +117,29 @@ if printing:
 
 np.savetxt("monteCarloResults.txt", monteCarloResults, fmt="%s", delimiter="      ", header="row0 = rand only.    row1 = rand+sys.    col0 = mean.    col1 = RMS")
 
+def doPlot(monteCarloArrayFinalCol, case="nocase", show=True, save=True, binno=100, edgecolor="black", linewidth=0.5):
 
-monteCarloArrayRandFinalColValues = []
-for i in range(len(monteCarloArrayRandFinalCol)):
-    monteCarloArrayRandFinalColValues.append(monteCarloArrayRandFinalCol[i].value)
 
-# plt.hist(monteCarloArrayRandFinalColValues, bins=1000, density=True, histtype="step")
-# plt.show()k
+
+    monteCarloArrayFinalColValues = []
+    for i in range(len(monteCarloArrayFinalCol)):
+        monteCarloArrayFinalColValues.append(monteCarloArrayFinalCol[i].value)
+
+
+
+    var = np.var(monteCarloArrayFinalColValues)
+    avg = np.mean(monteCarloArrayFinalColValues)
+
+    pdf_x = np.linspace(min(monteCarloArrayFinalColValues), max(monteCarloArrayFinalColValues), 100)
+    pdf_y = 1.0/np.sqrt(2*np.pi*var)*np.exp(-0.5*(pdf_x-avg)**2/var)
+
+    plt.figure()
+    plt.hist(monteCarloArrayFinalColValues, bins=binno, density=True, histtype="bar", edgecolor=edgecolor, linewidth=linewidth)
+    plt.plot(pdf_x, pdf_y)
+    plt.xlabel("Mapping Error Magnitude [m]")
+    plt.ylabel("Probability Density")
+    if save: plt.savefig("histogram%s.pdf" %case)
+    if show: plt.show()
+
+doPlot(monteCarloArrayRandFinalCol, show=show, save=True, case="Random")
+doPlot(monteCarloArrayBothFinalCol, show=show, save=True, case="Both")
