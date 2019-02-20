@@ -33,3 +33,5 @@ if printing:
     print("Nadir RSS based on (my) calculated values for systematic = %s \n"
           "Nadir RSS for both random and systematic                 = %s" %(nadirRSSSystematic, nadirRSSTotal))
 
+
+

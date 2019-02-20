@@ -16,7 +16,7 @@ import sys
 
 pi=np.pi
 
-saveOutput = False
+saveOutput = True
 printing = True
 
 if saveOutput:
@@ -30,8 +30,11 @@ if saveOutput:
 problemParameters = ProblemParameters()
 D0 = problemParameters.D0
 epsilon = problemParameters.epsilon
-# lat = problemParameters(lat=0*u.deg).lat
+eta = problemParameters.eta
+h = problemParameters.h
 Vsc = problemParameters.Vsc
+Xtarg_nom = problemParameters.Xtarg_nom
+
 decimals = 1
 
 ########################################################################################################################

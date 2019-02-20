@@ -120,6 +120,17 @@ The error is:                         OK
 ========================================================================
 
 NADIR RSS CALCULATIONS:
-Nadir RSS based on (my) calculated values = 590.395378532171 m 
-Nadir RSS based on given values           = 590.4527669509222 m
-weeny
+Nadir RSS based on (my) calculated values for random     = 590.395378532171 m 
+Nadir RSS based on given values for random               = 590.4527669509222 m
+Nadir RSS based on (my) calculated values for systematic = 643.6632682019193 m 
+Nadir RSS for both random and systematic                 = 873.4625766639209 m
+
+==========================================Monte Carlo===================================================================
+
+For random only case:
+RMS = 590.3266545952928 m 
+Mean = -0.7831724965683371 m
+
+For random + systematic case:
+RMS = 871.9261571961994 m 
+Mean = 642.356042902554 m

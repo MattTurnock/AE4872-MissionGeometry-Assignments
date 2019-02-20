@@ -164,15 +164,17 @@ def npArray2LatexTable(array, savename):
 class ProblemParameters:
 
     # General parameters
-    def __init__(self, h=1000*u.km, epsilon=21.6052*u.deg, lat=0*u.deg):
+    def __init__(self, h=1000*u.km, epsilon=21.6052*u.deg, lat=0*u.deg, Xssp=0*u.m):
         self.h = h
         self.epsilon = epsilon
+        self.eta = 90*u.deg - epsilon
         self.D0 = (h/np.sin(epsilon)).to(u.km)
         self.lat = lat
         self.mu = constants["muEarth"]
         self.Re = constants["RE"]
         self.Rs = self.Re + self.h
         self.Vsc = get_circular_velocity_units(self.mu, self.Rs, units=u.m/u.s)
+        self.Xtarg_nom = Xssp + self.h * np.tan(self.eta)
 
     # Individual errors
     starSensorMeasurement    = 0.0015*u.deg
@@ -203,3 +205,68 @@ class ProblemParameters:
     timingMapping                   = 367.5*u.m
     projectionMapping               = 700.0*u.m
     subsatellitePointMapping        = 450.0*u.m
+
+
+
+def doMonteCarlo(iterations, randIndices, randSigmas, Xtarg_nom=0, Vsc=0, eta=0, h=0, systIndices=np.array([]), systValues=np.array([])):
+    # TODO: add neat documentation
+    arrayLength = 27
+
+
+    monteArray = np.zeros((iterations, arrayLength), dtype=object)
+
+    # Plonk random numbers into the random slots and the systematic ones
+
+    for i in range(len(monteArray)):
+        row = monteArray[i]
+        for j in range(len(randIndices)):
+            randIndex = randIndices[j]
+            row[randIndex] = np.random.randn() * randSigmas[j]
+        for j in range(len(systIndices)):
+            systIndex = systIndices[j]
+            row[systIndex] = systValues[j]
+
+    # Sum systematic and random errors for dX
+    monteArray[:, 2] = np.sum(monteArray[:, 0:2], axis=1)
+
+    # Sum systematic and random errors for dT
+    monteArray[:, 5] = np.sum(monteArray[:, 3:5], axis=1)
+
+    # Sum all errors in dTheta
+    monteArray[:, 22] = np.sum(monteArray[:, 6:22], axis=1)
+
+    # Calculate dX_SSP using dX_ode and dT
+    dTs = np.copy(monteArray[:, 5])
+    dXs = np.zeros(len(dTs), dtype=object)
+    for i in range(len(dTs)):
+        dT = dTs[i]
+        dXs[i] = (dT * Vsc).to(u.m)
+
+    monteArray[:, 23] = monteArray[:, 2] + dXs
+
+    # Calculate new theta from theta_nom and dtheta
+    toAdd = np.ones(len(monteArray[:, 24]), dtype=object)
+    for i in range(len(toAdd)):
+        toAdd[i] = eta
+
+    monteArray[:, 24] = monteArray[:, 22] + toAdd
+
+    # Calculate x_targ from equation, and also dXtargs
+    Xtargs = np.ones(len(monteArray[:, 25]), dtype=object)
+    dXtargs = np.copy(Xtargs)
+    for i in range(len(Xtargs)):
+        Xssp = monteArray[i, 23]
+        theta = monteArray[i, 24]
+        Xtarg = Xssp + h * np.tan(theta)
+
+        Xtargs[i] = Xtarg
+        dXtargs[i] = Xtarg - Xtarg_nom
+
+    monteArray[:, 25] = Xtargs
+    monteArray[:, 26] = dXtargs
+
+
+    dXtargs = monteArray[:, 26]
+
+
+    return monteArray
