@@ -3,10 +3,11 @@
 """
 design7_utils.py: A bunch of useful functions for the DESIGN-7 assignment
 """
-from json_to_dict import constants
+from matplotlib import pyplot as plt
 import numpy as np
 from astropy import units as u
 from Ass1.kep_orbit_utils import get_circular_velocity_units
+from json_to_dict import constants
 pi=np.pi
 
 class ProblemParameters:
@@ -212,7 +213,6 @@ def mapErrorPrintout(problemParametersError, problemParametersMappingError, name
 
     return errorMappingCalc
 
-
 def npArray2LatexTable(array, savename):
     """
     Simple function to convert numpy array to a latex table component
@@ -220,11 +220,7 @@ def npArray2LatexTable(array, savename):
     :param savename: Name to give to generated txt file
     :return None:
     """
-    np.savetxt(savename, array, fmt="%s", delimiter="\t&\t", newline="      // \n")
-
-
-
-
+    np.savetxt(savename, array, fmt="%s", delimiter="\t&\t", newline="      \\\ \n \hline \n")
 
 def doMonteCarlo(iterations, randIndices, randSigmas, Xtarg_nom=0, Vsc=0, eta=0, h=0, systIndices=np.array([]),
                  systValues=np.array([])):
@@ -297,3 +293,49 @@ def doMonteCarlo(iterations, randIndices, randSigmas, Xtarg_nom=0, Vsc=0, eta=0,
     monteArray[:, 26] = dXtargs
 
     return monteArray
+
+def doPlot(monteCarloArrayFinalCol, case="nocase", show=True, save=True, binno=100, linewidth=0.5, fontsz=20):
+    """
+    Function to plot a histogram and fit a normal distribution to it
+    :param monteCarloArrayFinalCol: Numpy array listing all Monte-Carlo mapping errors
+    :param case: A string to define the case for saving
+    :param show: Choose to display plot
+    :param save: Choose to save plot
+    :param binno: Number of bins for the historgram
+    :param linewidth: Width of histogram outline lines
+    :return None:
+    """
+
+    # Define the plotting values (since given array has quantities)
+    monteCarloArrayFinalColValues = []
+    for i in range(len(monteCarloArrayFinalCol)):
+        monteCarloArrayFinalColValues.append(monteCarloArrayFinalCol[i].value)
+
+    # Define the gaussian distribution to overlay
+    var = np.var(monteCarloArrayFinalColValues)
+    avg = np.mean(monteCarloArrayFinalColValues)
+    pdf_x = np.linspace(min(monteCarloArrayFinalColValues), max(monteCarloArrayFinalColValues), 100)
+    pdf_y = 1.0/np.sqrt(2*np.pi*var)*np.exp(-0.5*(pdf_x-avg)**2/var)
+
+    # Plot the things
+    plt.figure()
+    plt.hist(monteCarloArrayFinalColValues, bins=binno, density=True, histtype="bar", edgecolor="black", linewidth=linewidth)
+    plt.plot(pdf_x, pdf_y)
+    plt.xlabel("Mapping Error Magnitude [m]")
+    plt.ylabel("Probability Density")
+    ax = plt.gca()
+    for item in ([ax.title, ax.xaxis.label, ax.yaxis.label, ax.yaxis.get_offset_text()] +
+                 ax.get_xticklabels() + ax.get_yticklabels()):
+        item.set_fontsize(fontsz)
+    if save: plt.savefig("histogram%s.pdf" %case, bbox_inches="tight")
+    if show: plt.show()
+
+def swapCols(array, swapIndices):
+    """
+    Simple function to swap 2 columns in a numpy array
+    :param array: Array to swap columns in
+    :param swapIndices: length-2 list of indices to swap
+    :return array: The new array with swapped columns
+    """
+    array[:, swapIndices[0]], array[:, swapIndices[1]] = array[:, swapIndices[1]], array[:, swapIndices[0]].copy()
+    return array

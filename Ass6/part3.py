@@ -8,9 +8,7 @@ __email__ = "matthew.turnock@protonmail.com"
 __version__ = "1.0"
 
 ########################################################################################################################
-
 from Ass6.part2 import *
-from matplotlib import pyplot as plt
 
 # Some things to vary
 iterations = 10000
@@ -116,38 +114,6 @@ if printing:
 # Save results array to text
 np.savetxt("monteCarloResults.txt", monteCarloResults, fmt="%s", delimiter="      ", header="row0 = rand only.    row1 = rand+sys.    col0 = mean.    col1 = RMS")
 
-# Define plotting function
-def doPlot(monteCarloArrayFinalCol, case="nocase", show=True, save=True, binno=100, linewidth=0.5):
-    """
-    Function to plot a histogram and fit a normal distribution to it
-    :param monteCarloArrayFinalCol: Numpy array listing all Monte-Carlo mapping errors
-    :param case: A string to define the case for saving
-    :param show: Choose to display plot
-    :param save: Choose to save plot
-    :param binno: Number of bins for the historgram
-    :param linewidth: Width of histogram outline lines
-    :return None:
-    """
-
-    # Define the plotting values (since given array has quantities)
-    monteCarloArrayFinalColValues = []
-    for i in range(len(monteCarloArrayFinalCol)):
-        monteCarloArrayFinalColValues.append(monteCarloArrayFinalCol[i].value)
-
-    # Define the gaussian distribution to overlay
-    var = np.var(monteCarloArrayFinalColValues)
-    avg = np.mean(monteCarloArrayFinalColValues)
-    pdf_x = np.linspace(min(monteCarloArrayFinalColValues), max(monteCarloArrayFinalColValues), 100)
-    pdf_y = 1.0/np.sqrt(2*np.pi*var)*np.exp(-0.5*(pdf_x-avg)**2/var)
-
-    # Plot the things
-    plt.figure()
-    plt.hist(monteCarloArrayFinalColValues, bins=binno, density=True, histtype="bar", edgecolor="black", linewidth=linewidth)
-    plt.plot(pdf_x, pdf_y)
-    plt.xlabel("Mapping Error Magnitude [m]")
-    plt.ylabel("Probability Density")
-    if save: plt.savefig("histogram%s.pdf" %case)
-    if show: plt.show()
 
 
 # Do and save plots

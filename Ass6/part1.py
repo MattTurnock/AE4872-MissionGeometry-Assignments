@@ -153,5 +153,9 @@ for i in range(len(nadirErrorRandomToSave)):
         errorFunctionName = errorFunction.__name__
     nadirErrorRandomToSave[i, -2] = errorFunctionName
 
+nadirErrorRandomToSave = swapCols(nadirErrorRandomToSave, [0, 2])
+nadirErrorRandomToSave = swapCols(nadirErrorRandomToSave, [1, 2])
+nadirErrorRandomToSave = swapCols(nadirErrorRandomToSave, [2, 3])
+nadirErrorRandomToSave = swapCols(nadirErrorRandomToSave, [3, 4])
 npArray2LatexTable(nadirErrorRandomToSave, "nadirRandomErrors.txt")
 

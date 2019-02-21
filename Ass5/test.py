@@ -12,4 +12,8 @@ from Ass4.optim1_utils import himmelblau
 import numpy as np
 import random
 
-print(himmelblau(3.064516129, 1.935483871))
+
+array = np.array([[1,2,3],[4,5,6]])
+print(array)
+newarray = swapCols(array, [0,-1])
+print(newarray)

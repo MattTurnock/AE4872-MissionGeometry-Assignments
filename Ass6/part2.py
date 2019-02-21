@@ -22,6 +22,7 @@ nadirErrorSystematic = np.array(nadirErrorSystematic)
 nadirErrorSystematicToSave = np.array(nadirErrorSystematic)
 nadirErrorSystematicToSave[0][2] = nadirErrorSystematicToSave[0][2].__name__
 
+nadirErrorSystematicToSave = swapCols(nadirErrorSystematicToSave, [0, 2])
 npArray2LatexTable(nadirErrorSystematicToSave, "nadirSystematicErrors.txt")
 
 nadirRSSSystematic = doRSS(nadirErrorSystematic[:, 3])

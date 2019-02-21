@@ -135,16 +135,6 @@ def E2M(E, ECC):
         M = misc_utils.angle2positive(M)
     return M
 
-# theta = np.deg2rad(239.5437)
-# M = np.deg2rad(239.6546)
-# e = 0.0011219
-#
-# M_calc = E2M(theta2E(theta, e), e)
-# print(np.rad2deg(M_calc))
-#
-# theta_calc = E2theta(M2E(M, e), e)
-# print(np.rad2deg(theta_calc))
-
 
 
 
