@@ -124,7 +124,6 @@ for i in range(len(toLoop)):
     toLoop[i].append(errorMappingCalc)
 
 # Get total pointing error wrt Nadir
-
 errorInfo = np.array(toLoop)
 
 nadirErrorInfo = []
