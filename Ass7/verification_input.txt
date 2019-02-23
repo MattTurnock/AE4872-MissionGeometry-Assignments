@@ -1,0 +1,4 @@
+10.0 deg	&	45.0 deg	&	110.0 deg	&	15.0 deg	&	70.0 deg	&	32.0 deg	&	inside      \\ 
+ \hline 
+10.0 deg	&	45.0 deg	&	110.0 deg	&	15.0 deg	&	70.0 deg	&	32.0 deg	&	outside      \\ 
+ \hline 

@@ -1,0 +1,12 @@
+0.0 deg	&	90.0 deg	&	0.0 deg	&	0.0 deg	&	0.0 deg	&	90.0 deg	&	inside      \\ 
+ \hline 
+0.0 deg	&	30.0 deg	&	0.0 deg	&	0.0 deg	&	0.0 deg	&	90.0 deg	&	inside      \\ 
+ \hline 
+0.0 deg	&	10.0 deg	&	5.0 deg	&	20.0 deg	&	25.0 deg	&	30.0 deg	&	inside      \\ 
+ \hline 
+5.0 deg	&	30.0 deg	&	5.0 deg	&	0.0 deg	&	30.0 deg	&	90.0 deg	&	inside      \\ 
+ \hline 
+0.0 deg	&	45.0 deg	&	0.0 deg	&	-20.0 deg	&	-20.0 deg	&	90.0 deg	&	inside      \\ 
+ \hline 
+0.0 deg	&	10.0 deg	&	5.0 deg	&	20.0 deg	&	25.0 deg	&	30	&	outside      \\ 
+ \hline 
