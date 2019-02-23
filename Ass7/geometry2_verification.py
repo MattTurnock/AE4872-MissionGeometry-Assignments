@@ -11,7 +11,6 @@ __version__ = "1.0"
 from Ass6.design7_utils import npArray2LatexTable
 from Ass7.geometry2_utils import *
 
-
 a1 = 10*u.deg
 d1 = 15*u.deg
 a2 = 45*u.deg
@@ -25,5 +24,3 @@ outputArray = findAllValues(inputArray)
 npArray2LatexTable(inputArray, "verification_input.txt")
 npArray2LatexTable(outputArray, "verification_output.txt")
 print("Given the input parameters:\n%s\nWe get output parameters:\n%s" %(inputArray, outputArray))
-
-

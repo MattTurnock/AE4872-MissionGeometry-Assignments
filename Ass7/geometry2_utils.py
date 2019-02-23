@@ -105,7 +105,6 @@ def getTotalArea(inputList, getFrom="coords", type="inside", R=1*u.m, units=u.m*
     :param angleUnits: Units to use for angles. Should be u.rad or None
     :return Omega_t: The spherical triangle area
     """
-
     if (units is None) or (angleUnits is None):
         R = R.value
     if getFrom == "theta":
@@ -132,30 +131,6 @@ def getTotalArea(inputList, getFrom="coords", type="inside", R=1*u.m, units=u.m*
         Omega_t = Omega_t.to(units, equivalencies=u.dimensionless_angles())
 
     return Omega_t
-
-
-# a1 = 10*u.deg
-# d1 = 15*u.deg
-# a2 = 45*u.deg
-# d2 = 70*u.deg
-# a3 = 110*u.deg
-# d3 = 32*u.deg
-#
-# inputList = [a1, a2, a3, d1, d2, d3]
-# inputList = [theta12, theta13, theta23]
-
-# print(getAngularDistance(a1, d1, a2, d2, units=u.deg))
-# print(getRotationAngle(inputList, getFrom="coords", units=u.deg))
-# this = getTotalArea(inputList, getFrom="coords", type="inside", R=1*u.m, units=u.m**2, angleUnits=u.rad)
-# print(this)
-# thetas = getTriangleAngularDistances(inputList, units=u.rad)
-# print(thetas)
-# print(getTotalArea([thetas[0].value, thetas[1].value, thetas[2].value], getFrom="theta", type="inside", units=None, angleUnits=None))
-
-# inputArray = np.array([[a1, a2, a3, d1, d2, d3, areaType],
-#                        [a1, a2, a3, d1, d2, d3, areaType]])
-
-
 
 def findAllValues(inputArray):
     """
@@ -186,17 +161,3 @@ def findAllValues(inputArray):
         outputArray[i, :] = [theta12, theta13, theta23, Phi23_1, Phi31_2, Phi12_3, Omega_t]
 
     return outputArray
-
-# inputArray = np.array([[a1, a2, a3, d1, d2, d3, "inside"],
-#                        [a1, a2, a3, d1, d2, d3, "outside"]], dtype=object)
-# print(findAllValues(inputArray))
-
-
-
-
-
-
-
-
-
-

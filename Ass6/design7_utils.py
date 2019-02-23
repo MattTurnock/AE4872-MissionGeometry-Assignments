@@ -220,7 +220,7 @@ def npArray2LatexTable(array, savename):
     :param savename: Name to give to generated txt file
     :return None:
     """
-    np.savetxt(savename, array, fmt="%s", delimiter="\t&\t", newline="      \\\ \n \hline \n")
+    np.savetxt(savename, array, fmt="%s", delimiter="\t&\t", newline="      \\\ \n\hline \n")
 
 def doMonteCarlo(iterations, randIndices, randSigmas, Xtarg_nom=0, Vsc=0, eta=0, h=0, systIndices=np.array([]),
                  systValues=np.array([])):
