@@ -11,6 +11,8 @@ __version__ = "1.0"
 from Ass6.design7_utils import npArray2LatexTable
 from Ass7.geometry2_utils import *
 
+decimals = 4
+
 # Define input parameters
 inputArray = np.array([[0*u.deg, 90*u.deg, 0*u.deg, 0*u.deg, 0*u.deg, 90*u.deg, "inside"],
                        [0*u.deg, 30*u.deg, 0*u.deg, 0*u.deg, 0*u.deg, 90*u.deg, "inside"],
@@ -28,7 +30,7 @@ for i in range(len(outputArrayRounded[:,0])):
     for j in range(len(outputArrayRounded[0,:])):
         outputArrayRounded[i, j] = outputArray[i, j].value
 outputArrayRounded = np.array(outputArrayRounded, dtype=float)
-outputArrayRounded = np.around(outputArrayRounded, decimals=4)
+outputArrayRounded = np.around(outputArrayRounded, decimals=decimals)
 
 # Make an array that will be saved, for latex input
 outputArrayToSave = np.zeros((len(outputArray), 11), dtype="<U10")
