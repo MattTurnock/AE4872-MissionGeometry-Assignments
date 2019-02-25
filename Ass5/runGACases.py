@@ -165,9 +165,14 @@ for j in range(repeats):
                 optimalChromosomes, optimalFitnesses, compTime = loadData(bitLength, convergenceTypeIndex,
                                                                       baseSavename=baseSavename, dataDir=dataDir)
 
-            # Plotting of results
+            # Plotting of results TODO: Add plotting of number of function evaluations (indicates computation time)
+
             runIndices = range(len(optimalFitnesses))
             optimalValues = 1/optimalFitnesses
+
+            generations = len(optimalFitnesses)
+            computations = generations*populationSize
+            # print("THIS IS IT %s" %computations)
 
             # Defines which figure to plot to based on convergence type and repeat run
             if convergenceTypeIndex == 0:
@@ -210,6 +215,8 @@ for j in range(repeats):
                 saveName = plotSavenameBase %(convergenceTypeIndex, j)
                 if titling: plt.title(saveName)
                 if save: plt.savefig(os.path.join(plotDir, saveName  + '.pdf'),bbox_inches="tight")
+
+                # This is where computation plots can be done - how to find out computations?
 
             finalOptimalValue = optimalValues[-1]
             finalOptimalParameterData = add_xns(parameterData, optimalChromosomes[-1])
