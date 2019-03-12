@@ -213,14 +213,35 @@ def mapErrorPrintout(problemParametersError, problemParametersMappingError, name
 
     return errorMappingCalc
 
-def npArray2LatexTable(array, savename):
+headerDefault ="""
+\\begin{table}[H]
+    \centering
+    \caption{Caption}
+    \label{tab:my_label}
+    \\begin{tabular}{}
+"""
+footerDefault = """
+    \end{tabular}
+\end{table}
+"""
+
+def npArray2LatexTable(array, savename, header=headerDefault, footer=footerDefault, headerComment=False, fmt="%s"):
     """
     Simple function to convert numpy array to a latex table component
     :param array: Array to convert
     :param savename: Name to give to generated txt file
+    :param header: Header string to give file. Default creates the beginning of a table
+    :param footer: Footer string to give file. Default creates the end of a table
+    :param headerComment: Boolean to say if header should be commented or not
     :return None:
     """
-    np.savetxt(savename, array, fmt="%s", delimiter="\t&\t", newline="      \\\ \n\hline \n")
+    if headerComment is False:
+        comments=""
+    else:
+        comments="#"
+
+    np.savetxt(savename, array, fmt=fmt, delimiter="\t&\t", newline="      \\\ \n\hline \n",
+               header=header, footer=footer, comments=comments)
 
 def doMonteCarlo(iterations, randIndices, randSigmas, Xtarg_nom=0, Vsc=0, eta=0, h=0, systIndices=np.array([]),
                  systValues=np.array([])):

@@ -10,16 +10,31 @@
   "Ldot": {
     "unit": "deg/sday",
     "val": 360,
-    "descr": "rotation rate of Earth"
+    "description": "rotation rate of Earth"
   },
   "Ve": {
     "unit": "m/s",
     "val": 464.0,
-    "descr": "rotation speed of the Earth at the equator"
+    "description": "rotation speed of the Earth at the equator"
   },
-  "iDelfi": {
+  "iDelfiC3": {
     "unit": "deg",
     "val": 98.0
+  },
+  "iDelfi-n3Xt": {
+    "unit": "deg",
+    "val": "97.76",
+    "description": "inclination of Delfi-n3Xt, from Wikipedia"
+  },
+  "aDelfi-n3Xt": {
+    "unit": "km",
+    "val": 689.5,
+    "description": "semi-major axis of Delfi-n3Xt, from Wikipedia"
+  },
+  "TDelfi-n3Xt": {
+    "unit": "min",
+    "val": 98.41,
+    "description": "Period of Delfi-n3Xt, from Wikipedia"
   },
   "iENVISAT": {
     "unit": "deg",
