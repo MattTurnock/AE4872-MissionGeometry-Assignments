@@ -64,10 +64,10 @@ def H(phi, useAstroUnit=False):
 
     return H
 
-def acos2(alpha, Hfun):
+def acos2(alpha, Hfun, outputUnits=None):
 
     angleOut = np.arccos(alpha) * Hfun
-
+    angleOut = mod360(angleOut, outputUnit=outputUnits)
     return angleOut
 
 def getn(T, outputUnits=None):
@@ -118,7 +118,7 @@ def getDeltaalpha(rho1, rho2, delta, phi2, outputUnits=None):
 
     top = cos(rho2) - cos(rho1)*sin(delta)
     bottom = sin(rho1)*cos(delta)
-    returnAngle = acos2(top/bottom, -H(phi2, useAstroUnit=useAstroUnit))
+    returnAngle = acos2(top/bottom, -H(phi2, useAstroUnit=useAstroUnit), outputUnits=outputUnits)
     returnAngle = mod360(returnAngle, outputUnit=outputUnits)
 
     if useAstroUnit is True:
@@ -218,7 +218,7 @@ def getDeltaPsi(deltaEPrime, rhoE, delta, Deltaalpha, outputUnits=None):
         useAstroUnit = True
 
     HDalpha = H(Deltaalpha, useAstroUnit=useAstroUnit)
-    outAngle = acos2((top/bottom), HDalpha)
+    outAngle = acos2((top/bottom), HDalpha, outputUnits=outputUnits)
 
     if useAstroUnit:
         outAngle = outAngle.to(outputUnits, equivalencies=u.dimensionless_angles())
