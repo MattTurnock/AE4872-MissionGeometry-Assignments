@@ -25,7 +25,7 @@
 0.0	&	202.18	&	228.7	&	234.54	&	334.66      \\ 
 \hline 
 
-\end{tabular}
+    \end{tabular}
 \end{table}
       \\ 
 \hline 

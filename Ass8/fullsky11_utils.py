@@ -8,7 +8,6 @@ __email__ = "matthew.turnock@protonmail.com"
 __version__ = "1.0"
 
 ########################################################################################################################
-
 import numpy as np
 from astropy import units as u
 
@@ -22,9 +21,9 @@ pi = np.pi
 def mod360(angle, outputUnit=None):
     """
     Function to perform mod360 on numbers. if no unit given assumes radians
-    :param angle:
-    :param outputUnit:
-    :return:
+    :param angle: Angle to perform mod on
+    :param outputUnit: Units to output in.
+    :return angleMod: modulated angle
     """
     if (outputUnit is not None):
         angleVal = (angle.to(u.rad, equivalencies=u.dimensionless_angles())).value
@@ -39,12 +38,10 @@ def mod360(angle, outputUnit=None):
 
     return angleMod
 
-# print(mod360(1.2))
-
 def H(phi, useAstroUnit=False):
     """
     Function to apply modulo360 to an angle phi, then set H as 1 or -1. If no units are given, assume radians are used
-    :param phi: Angle to modulo
+    :param phi: Angle to apply H to
     :param useAstroUnit: Boolean to choose if astrounits are used
     :return H: 1 or -1 depending on outcome
     """
@@ -54,7 +51,6 @@ def H(phi, useAstroUnit=False):
         phiVal = phi
 
     phiMod = phiVal % (2*pi)
-    # print(phiMod)
     if 0 <= phiMod <= pi:
         H = 1
     elif pi <= phiMod <= 2*pi:
@@ -65,7 +61,13 @@ def H(phi, useAstroUnit=False):
     return H
 
 def acos2(alpha, Hfun, outputUnits=None):
-
+    """
+    version of acos function with H function applied to see if the output put should be negative. also applies mod360
+    :param alpha: (dimensionless) number to perform acos on
+    :param Hfun: Relevant hemisphere function to determine sign
+    :param outputUnits: Astropy units to output as. None returns radians
+    :return angelOut: Returns the acos angle
+    """
     angleOut = np.arccos(alpha) * Hfun
     angleOut = mod360(angleOut, outputUnit=outputUnits)
     return angleOut
@@ -73,9 +75,9 @@ def acos2(alpha, Hfun, outputUnits=None):
 def getn(T, outputUnits=None):
     """
     Get the mean motion of a satellite with given period
-    :param T:
-    :param outputUnits:
-    :return:
+    :param T: Period of satellite orbit
+    :param outputUnits: Units to output n as. If None is rad/s
+    :return n: mean motion of satellite
     """
     n = 2*pi/T
     if outputUnits is not None:
@@ -103,13 +105,13 @@ def getphi1_2(phi10, omega1, t, outputUnits=u.deg):
 
 def getDeltaalpha(rho1, rho2, delta, phi2, outputUnits=None):
     """
-    Intermediate function
-    :param rho1:
-    :param rho2:
-    :param delta:
-    :param phi2:
-    :param outputUnits:
-    :return:
+    Function to get change in alpha
+    :param rho1: angular distance between C and S
+    :param rho2: angular distance between P and S
+    :param delta: elevation angle
+    :param phi2: azimuth angle about S
+    :param outputUnits: Units to output as. If None is in radians
+    :return returnAngle: returns DeltaAlpha, the change in azimuth angle
     """
     if outputUnits is None:
         useAstroUnit = False
@@ -128,12 +130,12 @@ def getDeltaalpha(rho1, rho2, delta, phi2, outputUnits=None):
 
 def getrhoE(deltaEPrime, delta, Deltaalpha, outputUnits=None):
     """
-    intermediate function
-    :param deltaEPrime:
-    :param delta:
-    :param Deltaalpha:
-    :param outputUnits:
-    :return:
+    Gets the angle to euler axis E
+    :param deltaEPrime: co-elevation of E
+    :param delta: elevation angle
+    :param Deltaalpha: change in azimuth angle
+    :param outputUnits: Units to output as. If None returns radians
+    :return rhoE: angle to E
     """
     rhoE = np.arccos(cos(deltaEPrime)*sin(delta) + sin(deltaEPrime)*cos(delta)*cos(Deltaalpha))
 
@@ -145,11 +147,11 @@ def getrhoE(deltaEPrime, delta, Deltaalpha, outputUnits=None):
 def getomegaE(omega2, rho1, deltaEPrime, outputUnits=None):
     """
     Intermediate function. Is a rotation rate so use outputunits=u.Unit("rad/s") for example. Otherwise assumes radians/s
-    :param omega2:
-    :param rho1:
-    :param deltaEPrime:
-    :param outputUnits:
-    :return:
+    :param omega2: roatation rate of P around S
+    :param rho1: angle between C and S
+    :param deltaEPrime: co-elevation of E
+    :param outputUnits: Units to output as. If None returns radians/s
+    :return omegaE: rotation rate about E
     """
     top = omega2*sin(rho1)
     bottom = sin(deltaEPrime)
@@ -159,8 +161,6 @@ def getomegaE(omega2, rho1, deltaEPrime, outputUnits=None):
         omegaE = omegaE.to(outputUnits, equivalencies=u.dimensionless_angles())
 
     return omegaE
-
-# print(getomegaE(12*u.deg/u.s, 13*u.deg, 45*u.deg, outputUnits=u.Unit("deg/s")))
 
 def getomegaE2(omega1, omega2, rho1, outputUnits=None):
     """
@@ -243,8 +243,6 @@ def getalpha(phi1, Deltaalpha, outputUnit=None):
 
     return alpha
 
-# print(getalpha(12*u.deg, 1.2*u.rad, outputUnit=u.deg))
-
 def getdelta(rho1, rho2, phi2, outputUnit=None):
     """
     Function to get delta coord. Uses radians if outputUnit=None
@@ -299,9 +297,6 @@ def getV(omegaE, rhoE, outputUnits=None):
         V = V.to(outputUnits, equivalencies=u.dimensionless_angles())
 
     return V
-
-# print(getV(12*u.deg/u.s, 45*u.deg, outputUnits=u.rad/u.s))
-
 
 #######################################################################################################################
 # Full program to combine all, for a given time and initial conditions

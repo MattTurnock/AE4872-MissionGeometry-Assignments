@@ -23,7 +23,7 @@
   },
   "iDelfi-n3Xt": {
     "unit": "deg",
-    "val": "97.76",
+    "val": 97.76,
     "description": "inclination of Delfi-n3Xt, from Wikipedia"
   },
   "aDelfi-n3Xt": {
@@ -33,7 +33,7 @@
   },
   "TDelfi-n3Xt": {
     "unit": "min",
-    "val": 98.41,
+    "val": 98.1,
     "description": "Period of Delfi-n3Xt, from Wikipedia"
   },
   "iENVISAT": {
