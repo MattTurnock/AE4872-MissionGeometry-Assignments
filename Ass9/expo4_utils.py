@@ -727,9 +727,48 @@ def doFullExposin(k2, r1, r2, Psi, N, gamma1, mu, method="rectangle_central", th
 #                   angleUnits=u.rad, distanceUnits=u.km, accelUnits=u.km/u.s**2, timeUnits=u.s))
 
 
+def doTOFCalcMain(gamma1s, stepNumbers, k2, r1, r2, Psi, N, mu, saveName="test.npy", TOFArrUnits=u.year, printing=True):
+    """
+    Does the calculations for plotting
+    :param gamma1s:
+    :param stepNumbers:
+    :param k2:
+    :param r1:
+    :param r2:
+    :param Psi:
+    :param N:
+    :param mu:
+    :param saveName:
+    :param TOFArrUnits:
+    :param printing:
+    :return:
+    """
+    TOFGammaData = np.zeros((len(gamma1s), len(stepNumbers)))
+    for i in range(len(gamma1s)):
+        for j in range(len(stepNumbers)):
+            gamma1 = gamma1s[i]
+            stepNumber = stepNumbers[j]
+            yRange = abs(gamma1s[-1] - gamma1s[0])
+            diff = abs((gamma1 - gamma1s[0]))
+            percent = diff/yRange * 100
+            if printing: print("gamma %s, step %s. percent completion: %s" % (np.round(gamma1, decimals=4), int(stepNumber), int(percent)))
 
+            dataStep = doFullExposin(k2, r1, r2, Psi, N, gamma1, mu, thetaSplitNumber=stepNumber)
+            TOF = (dataStep[-1, -1] * u.s).to(TOFArrUnits).value
+            TOFGammaData[i, j] = TOF
 
+    np.save(saveName, TOFGammaData)
 
+def find_nearest_index(array, value):
+    """
+    Finds index nearest to desired value from array
+    :param array:
+    :param value:
+    :return:
+    """
+    array = np.asarray(array)
+    idx = (np.abs(array - value)).argmin()
+    return idx
 
 
 

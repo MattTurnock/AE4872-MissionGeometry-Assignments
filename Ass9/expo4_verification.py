@@ -15,7 +15,7 @@ from Ass6.design7_utils import npArray2LatexTable
 from Ass9.expo4_utils import *
 from json_to_dict import constants
 
-calculating = False
+calculating = True
 showing = True
 printing = True
 
@@ -82,29 +82,17 @@ gamma1Max = np.deg2rad(5)
 
 gamma1s = np.linspace(gamma1Min, gamma1Max, 100)
 
-TOFGammaData = np.zeros( (len(gamma1s), len(stepNumbers)) )
+
 
 # stepNumbers = [10, 100]
 
+
 if calculating:
+    doTOFCalcMain(gamma1s, stepNumbers, k2, r1, r2, Psi, N, muSun, saveName="verificationData/TOFGammaData.npy")
 
-    for i in range(len(gamma1s)):
-        for j in range(len(stepNumbers)):
-            gamma1 = gamma1s[i]
-            stepNumber = stepNumbers[j]
-            if printing: print("gamma %s, step %s" % (gamma1, stepNumber))
-
-            dataStep = doFullExposin(k2, r1, r2, Psi, N, gamma1, muSun, thetaSplitNumber=stepNumber)
-            TOF = (dataStep[-1, -1] * u.s).to(u.year).value
-            TOFGammaData[i, j] = TOF
-
-    np.save("verificationData/TOFGammaData.npy", TOFGammaData)
-
-else:
-    TOFGammaData = np.load("verificationData/TOFGammaData.npy")
+TOFGammaData = np.load("verificationData/TOFGammaData.npy")
 
 
-# print(TOFGammaData)
 
 gamma1s_degrees = np.rad2deg(gamma1s)
 
