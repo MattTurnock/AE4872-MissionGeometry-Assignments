@@ -7,16 +7,15 @@ __author__      = "Matthew Turnock"
 __email__ = "matthew.turnock@protonmail.com"
 __version__ = "1.0"
 
-########################################################################################################################
-import numpy as np
+#############################################################################################################
 from matplotlib import pyplot as plt
 
 from Ass6.design7_utils import npArray2LatexTable
 from Ass9.expo4_utils import *
 from json_to_dict import constants
 
-calculating = True
-showing = True
+calculating = False
+showing = False
 printing = True
 
 ##########################################################################################################
@@ -71,7 +70,7 @@ else:
 for i in range(len(TOFs)):
     TOF = TOFs[i]
     stepNumber = stepNumbers[i]
-    print("Steps %s  : %s" % (stepNumber, TOF))
+    print("Steps %s  : %s" % (stepNumber, np.round(TOF, decimals=5)))
 ########## Do TOF plots for many gammas ################
 # Get gamma1min and gamma1max
 thetaBar = getthetaBar(Psi, N)
@@ -83,16 +82,12 @@ gamma1Max = np.deg2rad(5)
 gamma1s = np.linspace(gamma1Min, gamma1Max, 100)
 
 
-
-# stepNumbers = [10, 100]
-
-
 if calculating:
     doTOFCalcMain(gamma1s, stepNumbers, k2, r1, r2, Psi, N, muSun, saveName="verificationData/TOFGammaData.npy")
 
 TOFGammaData = np.load("verificationData/TOFGammaData.npy")
 
-
+# DO plotting
 
 gamma1s_degrees = np.rad2deg(gamma1s)
 
@@ -100,29 +95,38 @@ labels = ["10 steps", "100 steps", "1000 steps", "2000 steps", "10000 steps"]
 xlabel = r"$\gamma_1$ [deg]"
 ylabel = "TOF [yrs]"
 savenameBase = "verificationData/verificationPlot_%s.pdf"
+fontsz=15
 
 plt.figure()
 for i in range(len(stepNumbers)):
     plt.plot(gamma1s_degrees, TOFGammaData[:, i])
 plt.xlim([-90, 90])
 plt.ylim([0, 5])
-plt.legend(labels)
+plt.legend(labels, fontsize=fontsz)
 plt.xlabel(xlabel)
 plt.ylabel(ylabel)
 plt.grid()
-plt.savefig(savenameBase %"main")
+ax = plt.gca()
+for item in ([ax.title, ax.xaxis.label, ax.yaxis.label, ax.yaxis.get_offset_text()] +
+             ax.get_xticklabels() + ax.get_yticklabels()):
+    item.set_fontsize(fontsz)
+plt.savefig(savenameBase %"main", bbox_inches="tight")
+
 
 plt.figure()
 for i in range(len(stepNumbers)):
     plt.plot(gamma1s_degrees, TOFGammaData[:, i])
-
 plt.xlim([-90, -30])
 plt.ylim([0, 0.5])
-plt.legend(labels)
+plt.legend(labels, fontsize=fontsz)
 plt.xlabel(xlabel)
 plt.ylabel(ylabel)
 plt.grid()
-plt.savefig(savenameBase %"cropped")
+ax = plt.gca()
+for item in ([ax.title, ax.xaxis.label, ax.yaxis.label, ax.yaxis.get_offset_text()] +
+             ax.get_xticklabels() + ax.get_yticklabels()):
+    item.set_fontsize(fontsz)
+plt.savefig(savenameBase %"cropped",  bbox_inches="tight")
 if showing: plt.show()
 
 

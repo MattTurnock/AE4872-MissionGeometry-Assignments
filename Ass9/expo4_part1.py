@@ -7,19 +7,15 @@ __author__      = "Matthew Turnock"
 __email__ = "matthew.turnock@protonmail.com"
 __version__ = "1.0"
 
-########################################################################################################################
-import numpy as np
+###########################################################################################################
 from matplotlib import pyplot as plt
 
-from Ass6.design7_utils import npArray2LatexTable
 from Ass9.expo4_utils import *
 from json_to_dict import constants
 
 calculating = False
 showing = True
 printing = True
-
-
 
 ##########################################################################################################
 # Set problem  parameters
@@ -65,9 +61,10 @@ for i in range(len(Ns)):
     print("Closest TOF at gamma = %s, TOF = %s" %(gamma1s[ClosestIndex], TOFGammaData[ClosestIndex]))
 
 
-    labels.append(r"N=%s: $\gamma_m$=%s, $\gamma_M$=%s" %(N, np.round(gamma1Min, decimals=4 ), np.round(gamma1Max, decimals=4 )))
+    labels.append(r"N=%s: $\gamma_m$=%s, $\gamma_M$=%s" %(N, np.round(gamma1Min, decimals=4 ),
+                                                          np.round(gamma1Max, decimals=4 )))
 
-xlabel = r"$\gamma_1$ [deg]"
+xlabel = r"$\gamma_1$ [rad]"
 ylabel = "TOF [yrs]"
 xlims = [-1.5, 1]
 ylims= [0, 4]
