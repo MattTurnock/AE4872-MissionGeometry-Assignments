@@ -67,7 +67,7 @@ split_data_2 = np.split(out_data_2, np.where(np.diff(out_data_2[:, 0]))[0] + 1)
 
 linewidth=1.0
 plot=True
-plotshow=False
+plotshow=True
 if plot:
     plt.figure()
     for data in split_data_1:
