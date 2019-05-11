@@ -187,4 +187,44 @@ def get_mProp(mDry, DV, Isp, g0=9.81*u.m/u.s**2, outputUnits=None):
 
     return mProp
 
+def get_OCF(K, DV, Isp, g0=9.81*u.m/u.s**2):
+    """
+    Gets orbit cost function OCF with equation from Wertz
+    :param K:
+    :param DV:
+    :param Isp:
+    :param g0:
+    :return:
+    """
+    OCF = (1+K) * np.exp( DV/(Isp*g0) ) - K
+    OCF = (OCF.to(u.dimensionless_unscaled)).value
+
+    return OCF
+
+
+###############################################################################################################
+# FOV
+
+def getW(R, beta, outputUnits=None):
+
+
+
+    W = 2*R*np.sin(0.5*beta)
+
+    if outputUnits is not None:
+        W = W.to(outputUnits)
+
+    return W
+
+def getFOV(W, r, outputUnits=None):
+
+    FOV = 2*np.arctan(W/(2*r))
+
+    if outputUnits is not None:
+        FOV =FOV.to(outputUnits)
+
+    return FOV
+
+
+
 
