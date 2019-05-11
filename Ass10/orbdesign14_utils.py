@@ -6,7 +6,6 @@ __author__      = "Matthew Turnock"
 __email__ = "matthew.turnock@protonmail.com"
 __version__ = "1.0"
 ###########################################################################################################
-
 import numpy as np
 from astropy import units as u
 
