@@ -1,8 +1,15 @@
+#!/usr/bin/env python
+"""
+orbdesign14_OCF.py: Script for finding mission phase OCF values of ORBDEGSIGN-14 assignment
+"""
+__author__      = "Matthew Turnock"
+__email__ = "matthew.turnock@protonmail.com"
+__version__ = "1.0"
+###########################################################################################################
 from Ass10.orbdesign14_utils import *
 from Ass10.orbdesign14_DVBudget import DVtot_US, DVtot_EU, Pe_GTO, Ap_GTO, DVE, DV_M, DV_T_US
 
 printing=False
-
 ##############################################################################################################
 # Total spacecraft mass budgeting - first estimate using SMAD table
 
@@ -39,8 +46,6 @@ if printing:
 
     print("\n============OCF===============")
 
-# print(DV_launcher, DV_T_US, DV_M, DVE)
-
 K = 0.1
 Isp_launcher = 348*u.s
 
@@ -57,6 +62,3 @@ if printing:
     print(printBase %("Maintenance", Isp_sc, DV_M, OCF_M))
     print(printBase %("EoL", Isp_sc, DVE, OCF_E))
     print("Total OCF : %s " %(OCF_tot))
-
-
-

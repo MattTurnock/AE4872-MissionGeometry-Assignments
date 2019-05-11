@@ -1,3 +1,11 @@
+#!/usr/bin/env python
+"""
+orbdesign14_DVBudget.py: Script for total DV budget of ORBDEGSIGN-14 assignment
+"""
+__author__      = "Matthew Turnock"
+__email__ = "matthew.turnock@protonmail.com"
+__version__ = "1.0"
+###########################################################################################################
 from Ass10.orbdesign14_utils import *
 
 printing = False
@@ -43,17 +51,11 @@ if printing:
 lam = 180*u.deg
 DV_EW = get_DV_J22(lam, inputUnits=u.deg)
 
-
-# DV_sol = 0.019*u.m/u.s/u.year
-# print("DV for solar radiation : %s" %DV_sol)
-
 V_GEO = getV(a1, a1, outputUnits=u.km/u.s)
 Deltai_NS_peryear = 0.8*u.deg
 DV_NS = (get_DV_NS(V_GEO, Deltai_NS_peryear, outputUnits=u.m/u.s))/u.year
 
-
 DV_M_yearly = DV_EW  + DV_NS
-
 
 years = 10*u.year
 DV_M = DV_M_yearly * years
@@ -75,8 +77,3 @@ if printing:
     print("Total DV for US launch  : %s" %DVtot_US)
     print("Total DV for EU launch  : %s" %DVtot_EU)
     print("Total DV for IND launch : %s" % DVtot_IND)
-
-
-
-
-

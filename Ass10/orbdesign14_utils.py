@@ -1,3 +1,12 @@
+#!/usr/bin/env python
+"""
+orbdesign14_utils.py: Script for utility functions of ORBDEGSIGN-14 assignment
+"""
+__author__      = "Matthew Turnock"
+__email__ = "matthew.turnock@protonmail.com"
+__version__ = "1.0"
+###########################################################################################################
+
 import numpy as np
 from astropy import units as u
 
@@ -31,7 +40,6 @@ def getV(r, a, mu=constants["muEarth"], outputUnits=None):
     :param outputUnits:
     :return:
     """
-
     V = np.sqrt( mu*( 2/r - 1/a ) )
 
     if outputUnits is not None:
@@ -48,16 +56,12 @@ def getDV_combined(V1, V2, Di, outputUnits=None):
     :param outputUnits:
     :return:
     """
-
     DV = np.sqrt(V1**2 + V2**2 - 2*V1*V2*np.cos(Di))
 
     if outputUnits is not None:
         DV.to(outputUnits)
 
     return DV
-
-
-
 
 def get_GEO_DV(Pe_GTO, i_GTO, Ap_GTO, i_GEO=0*u.deg, printing=True, outputUnits=None):
     """
@@ -70,7 +74,6 @@ def get_GEO_DV(Pe_GTO, i_GTO, Ap_GTO, i_GEO=0*u.deg, printing=True, outputUnits=
     :param outputUnits:
     :return:
     """
-
     # Get GTO parameters
     Ap_GTO = 35786*u.km + RE
     a_GTO = geta(Pe_GTO, Ap_GTO)
@@ -124,7 +127,6 @@ def getDV_circ2circ(a1, a2, printing=True, outputUnits=None):
         print("From orbit a1=%s to a2=%s:" %(a1, a2))
         print("DV1 : %s" %DV1)
         print("DV2 : %s" %DV2)
-        # print(a1, a2, aT, Vc1, Vc2, VT_Pe, VT_Ap)
 
     return (DV1, DV2)
 
@@ -157,9 +159,6 @@ def get_DV_NS(V_GEO, Deltai_NS, outputUnits=None):
     :param outputUnits:
     :return:
     """
-
-
-
     DV_NS = np.sqrt(2 * V_GEO**2 * (1 - np.cos(Deltai_NS)))
 
     if outputUnits is not None:
@@ -201,14 +200,17 @@ def get_OCF(K, DV, Isp, g0=9.81*u.m/u.s**2):
 
     return OCF
 
-
 ###############################################################################################################
-# FOV
+# FOV stuff
 
 def getW(R, beta, outputUnits=None):
-
-
-
+    """
+    Finds witdth of area for satellite to cover
+    :param R: Radius of planet
+    :param beta: Angle between most extreme points to cover
+    :param outputUnits:
+    :return:
+    """
     W = 2*R*np.sin(0.5*beta)
 
     if outputUnits is not None:
@@ -217,14 +219,16 @@ def getW(R, beta, outputUnits=None):
     return W
 
 def getFOV(W, r, outputUnits=None):
-
+    """
+    Finds required FOV of satellite
+    :param W: width of area to cover
+    :param r: orbital radius
+    :param outputUnits:
+    :return:
+    """
     FOV = 2*np.arctan(W/(2*r))
 
     if outputUnits is not None:
         FOV =FOV.to(outputUnits)
 
     return FOV
-
-
-
-
